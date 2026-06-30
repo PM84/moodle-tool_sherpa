@@ -31,7 +31,3 @@ $plugin->supported = [500, 501];
 $plugin->component = 'tool_sherpa';
 $plugin->maturity = MATURITY_ALPHA;
 $plugin->release = '0.1.0';
-$plugin->dependencies = [
-    'local_ai_manager' => 2025120400,
-    'block_ai_chat' => 2025121100,
-];

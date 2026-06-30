@@ -1,0 +1,72 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template tool_sherpa/help_icon
+
+    Replacement for core/help_icon: opens the Sherpa modal instead of a Bootstrap popover.
+
+    The help text (already formatted server side, including any $a substitution) is kept in a
+    hidden <template> next to the trigger so the modal can show the exact same content as the
+    popover. Without JavaScript the link falls back to the standalone help page.
+
+    Context variables required for this template:
+    * url The standalone help page URL (no JS fallback).
+    * alt Alt text for the help icon.
+    * title The help title (used as modal title and aria-label).
+    * text The formatted help text HTML.
+    * completedoclink The "More help" doc link HTML (optional).
+    * component The help string component.
+    * identifier The help string identifier.
+    * contextid The current context id.
+    * chatavailable Whether the chat region is available.
+    * showmaterials Whether the materials region is enabled.
+
+    Example context (json):
+    {
+        "url": "https://example.org/help.php",
+        "alt": "Help with X",
+        "title": "Help with X",
+        "text": "<p>Some help.</p>",
+        "completedoclink": "",
+        "component": "moodle",
+        "identifier": "coursevisibility",
+        "contextid": 42,
+        "chatavailable": true,
+        "showmaterials": true
+    }
+}}
+<span class="tool-sherpa-help-wrapper">
+    <a class="btn btn-link p-0 me-2 icon-no-margin tool-sherpa-help"
+        role="button" tabindex="0"
+        href="{{url}}"
+        target="_blank" rel="noopener"
+        data-action="tool-sherpa-help"
+        data-component="{{component}}"
+        data-identifier="{{identifier}}"
+        data-contextid="{{contextid}}"
+        data-title="{{title}}"
+        data-chatavailable="{{#chatavailable}}1{{/chatavailable}}{{^chatavailable}}0{{/chatavailable}}"
+        data-showmaterials="{{#showmaterials}}1{{/showmaterials}}{{^showmaterials}}0{{/showmaterials}}"
+        aria-haspopup="dialog"
+        aria-label="{{title}}">
+        {{#pix}}help, core, {{{alt}}}{{/pix}}
+    </a>
+    <template data-region="tool-sherpa-helptext">
+        <div class="tool-sherpa-helptext">{{{text}}}</div>
+        {{#completedoclink}}<div class="tool-sherpa-doclink mt-2">{{{completedoclink}}}</div>{{/completedoclink}}
+    </template>
+</span>

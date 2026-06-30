@@ -36,4 +36,13 @@ $capabilities = [
             'manager' => CAP_ALLOW,
         ],
     ],
+
+    // Allows a user to use the Sherpa help modal (help text, materials, AI chat).
+    'tool/sherpa:usesupport' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'user' => CAP_ALLOW,
+        ],
+    ],
 ];

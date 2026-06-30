@@ -1,0 +1,40 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template tool_sherpa/help_modal_body
+
+    Body of the Sherpa help modal with three regions: help text, materials and chat. The regions
+    are filled by the tool_sherpa/help_modal AMD module.
+
+    Context variables required for this template:
+    * none
+
+    Example context (json):
+    {
+    }
+}}
+<div class="tool-sherpa-modal" data-region="tool-sherpa-modal-body">
+    <section class="tool-sherpa-region tool-sherpa-region-help" data-region="help"></section>
+    <section class="tool-sherpa-region tool-sherpa-region-materials mt-3" data-region="materials" hidden>
+        <h6 class="tool-sherpa-region-title">{{#str}} materialsregiontitle, tool_sherpa {{/str}}</h6>
+        <ul class="tool-sherpa-materials list-unstyled" data-region="materials-list"></ul>
+    </section>
+    <section class="tool-sherpa-region tool-sherpa-region-chat mt-3" data-region="chat" hidden>
+        <h6 class="tool-sherpa-region-title">{{#str}} chatregiontitle, tool_sherpa {{/str}}</h6>
+        <div data-region="chat-container"></div>
+    </section>
+</div>

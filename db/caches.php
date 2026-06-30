@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for tool_sherpa.
+ * Cache definitions for tool_sherpa.
  *
  * @package    tool_sherpa
  * @copyright  2026 ISB Bayern
@@ -25,13 +25,16 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026063001;
-$plugin->requires = 2025100600;
-$plugin->supported = [500, 501];
-$plugin->component = 'tool_sherpa';
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.2.0';
-$plugin->dependencies = [
-    'local_ai_manager' => 2026050500,
-    'block_ai_chat' => 2026050800,
+$definitions = [
+    // Short lived bridge for the field specific chat system prompt.
+    //
+    // Written when the help modal is opened (get_help_modal_content) and read by the
+    // local_ai_manager before_request hook callback. An application cache is used on purpose
+    // instead of $SESSION to avoid holding the session lock during the AJAX chat flow.
+    'activeprompt' => [
+        'mode' => cache_store::MODE_APPLICATION,
+        'simplekeys' => true,
+        'simpledata' => true,
+        'ttl' => 600,
+    ],
 ];

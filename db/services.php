@@ -44,4 +44,13 @@ $functions = [
         'type'        => 'write',
         'ajax'        => true,
     ],
+    'tool_sherpa_get_help_modal_content' => [
+        'classname'   => 'tool_sherpa\external\get_help_modal_content',
+        'methodname'  => 'execute',
+        'description' => 'Get the lazy loaded content (materials, chat availability) for a help modal '
+            . 'and store the field specific chat system prompt.',
+        'type'        => 'read',
+        'ajax'        => true,
+        'capabilities' => 'tool/sherpa:usesupport',
+    ],
 ];

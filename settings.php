@@ -50,4 +50,37 @@ if ($hassiteconfig) {
         get_string('enabled_desc', 'tool_sherpa'),
         1
     ));
+
+    // Replace the core help popover with the Sherpa modal. Default off (classic popover).
+    $settings->add(new admin_setting_configcheckbox(
+        'tool_sherpa/usemodal',
+        get_string('usemodal', 'tool_sherpa'),
+        get_string('usemodal_desc', 'tool_sherpa'),
+        0
+    ));
+
+    // Show the "further materials" region in the modal.
+    $settings->add(new admin_setting_configcheckbox(
+        'tool_sherpa/showmaterials',
+        get_string('showmaterials', 'tool_sherpa'),
+        get_string('showmaterials_desc', 'tool_sherpa'),
+        1
+    ));
+
+    // Show the embedded AI chat region in the modal.
+    $settings->add(new admin_setting_configcheckbox(
+        'tool_sherpa/showchat',
+        get_string('showchat', 'tool_sherpa'),
+        get_string('showchat_desc', 'tool_sherpa'),
+        1
+    ));
+
+    // Template used to build the field specific system prompt for the chat.
+    $settings->add(new admin_setting_configtextarea(
+        'tool_sherpa/systemprompttemplate',
+        get_string('systemprompttemplate', 'tool_sherpa'),
+        get_string('systemprompttemplate_desc', 'tool_sherpa'),
+        get_string('systemprompttemplate_default', 'tool_sherpa'),
+        PARAM_RAW
+    ));
 }

@@ -42,21 +42,4 @@ if ($hassiteconfig) {
         get_string('enabled_desc', 'tool_sherpa'),
         1
     ));
-
-    // Whether to inject the support action next to core help icons.
-    $settings->add(new admin_setting_configcheckbox(
-        'tool_sherpa/helpiconintegration',
-        get_string('helpiconintegration', 'tool_sherpa'),
-        get_string('helpiconintegration_desc', 'tool_sherpa'),
-        1
-    ));
-
-    // The local_ai_manager purpose used to generate support answers.
-    $settings->add(new admin_setting_configtext(
-        'tool_sherpa/purpose',
-        get_string('purpose', 'tool_sherpa'),
-        get_string('purpose_desc', 'tool_sherpa'),
-        'chat',
-        PARAM_ALPHANUMEXT
-    ));
 }

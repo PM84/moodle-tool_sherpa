@@ -25,22 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['asksherpa'] = 'Ask Sherpa';
 $string['enabled'] = 'Enable Sherpa';
 $string['enabled_desc'] = 'If enabled, Sherpa provides individual AI based support throughout the site.';
-$string['error_airequestfailed'] = 'The AI support request could not be completed.';
-$string['error_supportunavailable'] = 'AI support is currently not available for you in this context.';
-$string['helpiconintegration'] = 'Help icon integration';
-$string['helpiconintegration_desc'] = 'If enabled, an "Ask Sherpa" action is shown next to core help icons.';
-$string['nohelpcontext'] = 'No help topic was provided, so Sherpa cannot offer specific support.';
 $string['pluginname'] = 'Sherpa';
 $string['privacy:metadata'] = 'The Sherpa tool does not store any personal data itself. Support requests are processed and logged by the local_ai_manager subsystem.';
-$string['purpose'] = 'AI purpose';
-$string['purpose_desc'] = 'The local_ai_manager purpose used to generate support answers (e.g. singleprompt).';
-$string['purposeusagedescription'] = 'Used to generate individual support answers for help topics.';
 $string['settingsheading'] = 'Sherpa support assistant';
 $string['settingsheading_desc'] = 'Sherpa reuses the AI functionality of local_ai_manager and block_ai_chat to provide individual support at various places in the user interface, such as help icons.';
-$string['sherpa:usesupport'] = 'Use Sherpa support';
-$string['sherpa:editsupport'] = 'Edit Sherpa support materials';
-$string['supportintro'] = 'Sherpa can help you understand this topic. Here is an explanation:';
-$string['supportpromptprefix'] = 'You are Sherpa, a friendly assistant for a Moodle learning platform. Explain the following help topic to the user in simple, clear language.';

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for tool_sherpa.
+ * External (AJAX) service definitions for tool_sherpa.
  *
  * @package    tool_sherpa
  * @copyright  2026 ISB Bayern
@@ -25,9 +25,23 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026063001;
-$plugin->requires = 2025100600;
-$plugin->supported = [500, 501];
-$plugin->component = 'tool_sherpa';
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0';
+$functions = [
+    'tool_sherpa_source_delete' => [
+        'classname'   => 'tool_sherpa\external\source_delete',
+        'description' => 'Delete a Sherpa source and its mappings.',
+        'type'        => 'write',
+        'ajax'        => true,
+    ],
+    'tool_sherpa_placement_delete' => [
+        'classname'   => 'tool_sherpa\external\placement_delete',
+        'description' => 'Delete a Sherpa placement and its mappings.',
+        'type'        => 'write',
+        'ajax'        => true,
+    ],
+    'tool_sherpa_mapping_delete' => [
+        'classname'   => 'tool_sherpa\external\mapping_delete',
+        'description' => 'Remove a mapping between a Sherpa source and placement.',
+        'type'        => 'write',
+        'ajax'        => true,
+    ],
+];

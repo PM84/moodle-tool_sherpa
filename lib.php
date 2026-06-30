@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for tool_sherpa.
+ * Library functions for tool_sherpa.
  *
  * @package    tool_sherpa
  * @copyright  2026 ISB Bayern
@@ -25,9 +25,21 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026063001;
-$plugin->requires = 2025100600;
-$plugin->supported = [500, 501];
-$plugin->component = 'tool_sherpa';
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0';
+/**
+ * Inplace editable callback for the management page.
+ *
+ * @param string $itemtype
+ * @param int $itemid
+ * @param string $newvalue
+ * @return \core\output\inplace_editable|null
+ */
+function tool_sherpa_inplace_editable(string $itemtype, int $itemid, string $newvalue): ?\core\output\inplace_editable {
+    switch ($itemtype) {
+        case 'sourceurl':
+            return \tool_sherpa\output\source_url_editable::update($itemid, $newvalue);
+        case 'placementvalue':
+            return \tool_sherpa\output\placement_value_editable::update($itemid, $newvalue);
+    }
+
+    return null;
+}

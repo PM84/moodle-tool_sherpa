@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for tool_sherpa.
+ * Capability definitions for tool_sherpa.
  *
  * @package    tool_sherpa
  * @copyright  2026 ISB Bayern
@@ -25,9 +25,15 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026063001;
-$plugin->requires = 2025100600;
-$plugin->supported = [500, 501];
-$plugin->component = 'tool_sherpa';
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0';
+$capabilities = [
+
+    // Manage the Sherpa sources, placements and their mappings.
+    'tool/sherpa:manage' => [
+        'riskbitmask' => RISK_CONFIG | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+];

@@ -25,6 +25,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+// Management page for sources, placements and their mappings.
+$ADMIN->add('tools', new admin_externalpage(
+    'tool_sherpa_manage',
+    get_string('manage', 'tool_sherpa'),
+    new moodle_url('/admin/tool/sherpa/manage.php'),
+    'tool/sherpa:manage'
+));
+
 if ($hassiteconfig) {
     $settings = new admin_settingpage('tool_sherpa', get_string('pluginname', 'tool_sherpa'));
     $ADMIN->add('tools', $settings);

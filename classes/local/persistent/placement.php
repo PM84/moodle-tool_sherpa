@@ -14,20 +14,38 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace tool_sherpa\local\persistent;
+
+use core\persistent;
+use tool_sherpa\placement as placement_type;
+
 /**
- * Version information for tool_sherpa.
+ * Persistent representing a Sherpa placement.
  *
  * @package    tool_sherpa
  * @copyright  2026 ISB Bayern
  * @author     Dr. Peter Mayer
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class placement extends persistent {
 
-defined('MOODLE_INTERNAL') || die();
+    /** @var string The table name. */
+    const TABLE = 'tool_sherpa_placement';
 
-$plugin->version = 2026063001;
-$plugin->requires = 2025100600;
-$plugin->supported = [500, 501];
-$plugin->component = 'tool_sherpa';
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0';
+    /**
+     * Return the definition of the properties of this model.
+     *
+     * @return array
+     */
+    protected static function define_properties(): array {
+        return [
+            'type' => [
+                'type' => PARAM_ALPHA,
+                'choices' => placement_type::get_types(),
+            ],
+            'value' => [
+                'type' => PARAM_RAW_TRIMMED,
+            ],
+        ];
+    }
+}

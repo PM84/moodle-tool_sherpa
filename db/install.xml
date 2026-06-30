@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="admin/tool/sherpa/db" VERSION="20260630" COMMENT="XMLDB file for Moodle admin/tool/sherpa"
+<XMLDB PATH="admin/tool/sherpa/db" VERSION="20260701" COMMENT="XMLDB file for Moodle admin/tool/sherpa"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
 >
@@ -7,20 +7,28 @@
     <TABLE NAME="tool_sherpa_source" COMMENT="Sources which Sherpa uses to provide support.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="url" TYPE="char" LENGTH="1337" NOTNULL="true" SEQUENCE="false" COMMENT="The URL of the source."/>
+        <FIELD NAME="url" TYPE="char" LENGTH="1333" NOTNULL="true" SEQUENCE="false" COMMENT="The URL of the source."/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="usermodified" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="tool_sherpa_placement" COMMENT="Placements which represent a location in the user interface.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="type" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" COMMENT="The type of the placement, see the constants in the placement class."/>
-        <FIELD NAME="value" TYPE="char" LENGTH="1337" NOTNULL="true" SEQUENCE="false" COMMENT="The concrete value / selector of the placement, depending on its type."/>
+        <FIELD NAME="value" TYPE="char" LENGTH="1333" NOTNULL="true" SEQUENCE="false" COMMENT="The concrete value / selector of the placement, depending on its type."/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="usermodified" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="tool_sherpa_mapping" COMMENT="Maps placements to the sources which Sherpa uses there.">
@@ -28,12 +36,19 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="placement" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The mapped placement."/>
         <FIELD NAME="source" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The mapped source."/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="placement" TYPE="foreign" FIELDS="placement" REFTABLE="tool_sherpa_placement" REFFIELDS="id"/>
         <KEY NAME="source" TYPE="foreign" FIELDS="source" REFTABLE="tool_sherpa_source" REFFIELDS="id"/>
+        <KEY NAME="usermodified" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="placement-source" UNIQUE="true" FIELDS="placement, source"/>
+      </INDEXES>
     </TABLE>
   </TABLES>
 </XMLDB>

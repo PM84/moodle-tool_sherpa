@@ -1,0 +1,63 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+namespace tool_sherpa\local\persistent;
+
+use core\persistent;
+
+/**
+ * Persistent representing a mapping between a Sherpa source and a placement.
+ *
+ * @package    tool_sherpa
+ * @copyright  2026 ISB Bayern
+ * @author     Dr. Peter Mayer
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class mapping extends persistent {
+
+    /** @var string The table name. */
+    const TABLE = 'tool_sherpa_mapping';
+
+    /**
+     * Return the definition of the properties of this model.
+     *
+     * @return array
+     */
+    protected static function define_properties(): array {
+        return [
+            'placement' => [
+                'type' => PARAM_INT,
+            ],
+            'source' => [
+                'type' => PARAM_INT,
+            ],
+        ];
+    }
+
+    /**
+     * Whether a mapping between the given placement and source already exists.
+     *
+     * @param int $placementid
+     * @param int $sourceid
+     * @return bool
+     */
+    public static function mapping_exists(int $placementid, int $sourceid): bool {
+        return self::record_exists_select(
+            'placement = :placement AND source = :source',
+            ['placement' => $placementid, 'source' => $sourceid]
+        );
+    }
+}

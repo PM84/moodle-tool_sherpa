@@ -1,0 +1,34 @@
+/* Composite badge: two adjoining Bootstrap badges sharing one rounded outline. */
+.tool_sherpa-badge {
+    display: inline-flex;
+    align-items: stretch;
+    margin: 0 0.25rem 0.25rem 0;
+    vertical-align: middle;
+}
+
+.tool_sherpa-badge .badge {
+    border-radius: 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.tool_sherpa-badge .badge:first-child {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.tool_sherpa-badge .badge:last-child {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
+
+/* Unlink control sitting inside the badge. */
+.tool_sherpa-badge .tool_sherpa-unlink {
+    color: inherit;
+    margin-left: 0.35rem;
+    opacity: 0.85;
+}
+
+.tool_sherpa-badge .tool_sherpa-unlink:hover {
+    opacity: 1;
+}

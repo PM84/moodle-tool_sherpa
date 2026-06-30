@@ -25,9 +25,36 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['addplacement'] = 'Add placement';
+$string['addsource'] = 'Add source';
+$string['deleteplacement'] = 'Delete placement';
+$string['deleteplacementconfirm'] = 'Are you sure you want to delete the placement "{$a}" and all of its source mappings?';
+$string['deletesource'] = 'Delete source';
+$string['deletesourceconfirm'] = 'Are you sure you want to delete the source "{$a}" and all of its placement mappings?';
+$string['editplacement'] = 'Edit placement';
+$string['editsource'] = 'Edit source';
+$string['editurl'] = 'Edit URL';
+$string['editvalue'] = 'Edit value';
 $string['enabled'] = 'Enable Sherpa';
 $string['enabled_desc'] = 'If enabled, Sherpa provides individual AI based support throughout the site.';
+$string['linkplacement'] = 'Link placement';
+$string['linksource'] = 'Link source';
+$string['manage'] = 'Manage Sherpa';
+$string['mappingexists'] = 'This source and placement are already mapped.';
+$string['placement'] = 'Placement';
+$string['placementdeleted'] = 'Placement deleted';
+$string['placements'] = 'Placements';
 $string['pluginname'] = 'Sherpa';
 $string['privacy:metadata'] = 'The Sherpa tool does not store any personal data itself. Support requests are processed and logged by the local_ai_manager subsystem.';
 $string['settingsheading'] = 'Sherpa support assistant';
 $string['settingsheading_desc'] = 'Sherpa reuses the AI functionality of local_ai_manager and block_ai_chat to provide individual support at various places in the user interface, such as help icons.';
+$string['sherpa:manage'] = 'Manage Sherpa sources and placements';
+$string['sourcedeleted'] = 'Source deleted';
+$string['sources'] = 'Sources';
+$string['type'] = 'Type';
+$string['type_formelement'] = 'Form element';
+$string['type_langstring'] = 'Language string';
+$string['type_path'] = 'Path';
+$string['unlink'] = 'Unlink';
+$string['url'] = 'URL';
+$string['value'] = 'Value';

@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="tool_sherpa_sources" COMMENT="Sources which Sherpa uses to provide support.">
+    <TABLE NAME="tool_sherpa_source" COMMENT="Sources which Sherpa uses to provide support.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="url" TYPE="char" LENGTH="1333" NOTNULL="true" SEQUENCE="false" COMMENT="The URL of the source."/>
@@ -13,15 +13,25 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="tool_sherpa_placement" COMMENT="Placements which connect a location in the user interface to a source.">
+    <TABLE NAME="tool_sherpa_placement" COMMENT="Placements which represent a location in the user interface.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="type" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" COMMENT="The type of the placement, see the constants in the placement class."/>
-        <FIELD NAME="source" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The source this placement points to."/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="source" TYPE="foreign" FIELDS="source" REFTABLE="tool_sherpa_sources" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="tool_sherpa_mapping" COMMENT="Maps placements to the sources which Sherpa uses there.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="placement" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The mapped placement."/>
+        <FIELD NAME="source" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The mapped source."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="placement" TYPE="foreign" FIELDS="placement" REFTABLE="tool_sherpa_placement" REFFIELDS="id"/>
+        <KEY NAME="source" TYPE="foreign" FIELDS="source" REFTABLE="tool_sherpa_source" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
   </TABLES>

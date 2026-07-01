@@ -60,14 +60,70 @@ const reloadTable = element => {
 };
 
 /**
+ * Module URL of the fireworks-js UMD build (https://fireworks.js.org/).
+ *
+ * The ".js" suffix is mandatory: RequireJS uses ids containing a URL scheme verbatim and does not
+ * append it, and the CDN only serves the file with the correct JavaScript MIME type when requested
+ * with its real ".js" extension.
+ *
+ * @var {String}
+ */
+const FIREWORKS_URL = 'https://cdn.jsdelivr.net/npm/fireworks-js@2/dist/index.umd.js';
+
+/** @var {Promise|null} Cached loader promise so the library is fetched only once. */
+let fireworksLoader = null;
+
+/**
+ * Lazy load the fireworks-js library through RequireJS (which Moodle uses).
+ *
+ * The library ships as a UMD bundle that registers itself as an anonymous AMD module. It must
+ * therefore be pulled in via require() and not a raw <script> tag - otherwise RequireJS aborts
+ * the next module load with a "Mismatched anonymous define()" error.
+ *
+ * @return {Promise} Resolves with the Fireworks class.
+ */
+const loadFireworks = () => {
+    if (fireworksLoader === null) {
+        fireworksLoader = new Promise((resolve, reject) => {
+            window.require([FIREWORKS_URL], module => resolve(module.Fireworks || module), reject);
+        });
+    }
+    return fireworksLoader;
+};
+
+/**
+ * Fire a short, decorative fireworks show in a full screen, non-interactive layer.
+ */
+const launchFireworks = () => {
+    loadFireworks().then(Fireworks => {
+        const container = document.createElement('div');
+        container.className = 'tool_sherpa-fireworks';
+        document.body.appendChild(container);
+
+        const fireworks = new Fireworks(container);
+        fireworks.start();
+
+        setTimeout(() => {
+            fireworks.stop();
+            container.remove();
+        }, 5000);
+        return;
+    }).catch(() => {
+        // The fireworks are purely decorative, so silently ignore any loading errors.
+        return;
+    });
+};
+
+/**
  * Open a modal form and reload the table once it is submitted.
  *
  * @param {HTMLElement} triggerElement
  * @param {String} formClass
  * @param {Promise|String} title
  * @param {Object} args
+ * @param {Function} [onSubmitted] Optional callback run after a successful submission.
  */
-const openModal = (triggerElement, formClass, title, args) => {
+const openModal = (triggerElement, formClass, title, args, onSubmitted) => {
     const modal = new ModalForm({
         formClass,
         args,
@@ -75,7 +131,12 @@ const openModal = (triggerElement, formClass, title, args) => {
         returnFocus: triggerElement,
     });
 
-    modal.addEventListener(modal.events.FORM_SUBMITTED, () => reloadTable(triggerElement));
+    modal.addEventListener(modal.events.FORM_SUBMITTED, () => {
+        reloadTable(triggerElement);
+        if (onSubmitted) {
+            onSubmitted();
+        }
+    });
     modal.show();
 };
 
@@ -122,7 +183,8 @@ export const init = () => {
         const sourceCreate = event.target.closest(SELECTORS.sourceCreate);
         if (sourceCreate) {
             event.preventDefault();
-            openModal(sourceCreate, 'tool_sherpa\\form\\source_form', getString('addsource', 'tool_sherpa'), {});
+            openModal(sourceCreate, 'tool_sherpa\\form\\source_form', getString('addsource', 'tool_sherpa'), {},
+                launchFireworks);
             return;
         }
 
@@ -147,7 +209,8 @@ export const init = () => {
         const placementCreate = event.target.closest(SELECTORS.placementCreate);
         if (placementCreate) {
             event.preventDefault();
-            openModal(placementCreate, 'tool_sherpa\\form\\placement_form', getString('addplacement', 'tool_sherpa'), {});
+            openModal(placementCreate, 'tool_sherpa\\form\\placement_form', getString('addplacement', 'tool_sherpa'), {},
+                launchFireworks);
             return;
         }
 

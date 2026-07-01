@@ -1,3 +1,11 @@
+/* Full screen, non-interactive fireworks overlay covering the whole viewport. */
+.tool_sherpa-fireworks {
+    position: fixed;
+    inset: 0;
+    z-index: 1080;
+    pointer-events: none;
+}
+
 /* Composite badge: two adjoining Bootstrap badges sharing one rounded outline. */
 .tool_sherpa-badge {
     display: inline-flex;

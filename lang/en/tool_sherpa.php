@@ -37,10 +37,6 @@ $string['editplacement'] = 'Edit placement';
 $string['editsource'] = 'Edit source';
 $string['editurl'] = 'Edit URL';
 $string['editvalue'] = 'Edit value';
-$string['enabled'] = 'Enable Sherpa';
-$string['enabled_desc'] = 'If enabled, Sherpa provides individual AI based support throughout the site.';
-$string['enablehelpchooser'] = 'Enable "Help, what should I do?"';
-$string['enablehelpchooser_desc'] = 'If enabled, teachers see a "Help, what should I do?" option in the activity chooser that opens an AI assisted activity chooser.';
 $string['helpchooser_chatsystemprompt'] = 'You are "Sherpa", a friendly didactic assistant embedded in the Moodle activity chooser. A teacher is planning what to do in their course. Discuss their ideas with them, ask brief clarifying questions when helpful, and recommend which of the available Moodle activities fit their goal, explaining why and how they could use each one.
 
 Available activities (modname: name):
@@ -78,18 +74,20 @@ $string['placementdeleted'] = 'Placement deleted';
 $string['placements'] = 'Placements';
 $string['pluginname'] = 'Sherpa';
 $string['privacy:metadata'] = 'The Sherpa tool does not store any personal data itself. Support requests are processed and logged by the local_ai_manager subsystem.';
-$string['settingsheading'] = 'Sherpa support assistant';
-$string['settingsheading_desc'] = 'Sherpa reuses the AI functionality of local_ai_manager and block_ai_chat to provide individual support at various places in the user interface, such as help icons.';
 $string['sherpa:manage'] = 'Manage Sherpa sources and placements';
 $string['sherpa:usesupport'] = 'Use Sherpa support';
-$string['showchat'] = 'Show AI chat';
-$string['showchat_desc'] = 'If enabled, the Sherpa modal embeds the AI chat (when AI is available for the user).';
-$string['showmaterials'] = 'Show further materials';
-$string['showmaterials_desc'] = 'If enabled, the Sherpa modal lists further materials (sources) configured for the help topic.';
-$string['sourcedeleted'] = 'Source deleted';
-$string['sources'] = 'Sources';
-$string['systemprompttemplate'] = 'System prompt template';
-$string['systemprompttemplate_default'] = 'You are "Sherpa", a helpful assistant for the Moodle learning platform. You help the user understand the control element "{title}" ({identifier},{component}).
+$string['settings:enabled'] = 'Enable Sherpa';
+$string['settings:enabled_desc'] = 'If enabled, Sherpa provides custom configurable support throughout the site.';
+$string['settings:enablehelpchooser'] = 'Enable "Help, what should I do?"';
+$string['settings:enablehelpchooser_desc'] = 'If enabled, teachers see a "Help, what should I do?" option in the activity chooser that opens an AI assisted activity chooser.';
+$string['settings:heading'] = 'Sherpa support assistant';
+$string['settings:heading_desc'] = 'Sherpa provides individual support at various places in the user interface, such as help icons.';
+$string['settings:showchat'] = 'Show AI chat';
+$string['settings:showchat_desc'] = 'If enabled, the Sherpa modal embeds the AI chat (when AI is available for the user).';
+$string['settings:showmaterials'] = 'Show further materials';
+$string['settings:showmaterials_desc'] = 'If enabled, the Sherpa modal lists further materials (sources) configured for the help topic.';
+$string['settings:systemprompttemplate'] = 'System prompt template';
+$string['settings:systemprompttemplate_default'] = 'You are "Sherpa", a helpful assistant for the Moodle learning platform. You help the user understand the control element "{title}" ({identifier},{component}).
 
 Official help text:
 ---
@@ -98,7 +96,11 @@ Official help text:
 Further sources (URLs): {source_urls}
 
 Answer in simple, clear language and stay within the given context.';
-$string['systemprompttemplate_desc'] = 'Template for the field specific system prompt sent to the AI chat. Placeholders: {title}, {component}, {identifier}, {helptext_plain}, {source_urls}.';
+$string['settings:systemprompttemplate_desc'] = 'Template for the field specific system prompt sent to the AI chat. Placeholders: {title}, {component}, {identifier}, {helptext_plain}, {source_urls}.';
+$string['settings:usemodal'] = 'Open help in a modal';
+$string['settings:usemodal_desc'] = 'If enabled, clicking a core help icon opens a Sherpa modal instead of the popover. Default: classic popover.';
+$string['sourcedeleted'] = 'Source deleted';
+$string['sources'] = 'Sources';
 $string['timecreated'] = 'Time created';
 $string['timemodified'] = 'Time modified';
 $string['title'] = 'Title';
@@ -109,6 +111,4 @@ $string['type_path'] = 'Path';
 $string['unlink'] = 'Unlink';
 $string['unlinkconfirm'] = 'Are you sure you want to unlink "{$a}"?';
 $string['url'] = 'URL';
-$string['usemodal'] = 'Open help in a modal';
-$string['usemodal_desc'] = 'If enabled, clicking a core help icon opens a Sherpa modal instead of the popover. Default: classic popover.';
 $string['value'] = 'Value';

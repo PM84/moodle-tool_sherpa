@@ -41,7 +41,7 @@ if (!in_array($tab, ['sources', 'placements'], true)) {
 $PAGE->requires->js_call_amd('tool_sherpa/management', 'init');
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('manage', 'tool_sherpa'));
+echo $OUTPUT->heading(get_string('managesourcesandplacements', 'tool_sherpa'));
 
 $tabs = [
     new tabobject('sources',

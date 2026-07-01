@@ -25,62 +25,86 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Management page for sources, placements and their mappings.
-$ADMIN->add('tools', new admin_externalpage(
-    'tool_sherpa_manage',
-    get_string('manage', 'tool_sherpa'),
-    new moodle_url('/admin/tool/sherpa/manage.php'),
-    'tool/sherpa:manage'
-));
+$systemcontext = context_system::instance();
 
-if ($hassiteconfig) {
-    $settings = new admin_settingpage('tool_sherpa', get_string('pluginname', 'tool_sherpa'));
-    $ADMIN->add('tools', $settings);
+// The "Manage sources and placements" page should be accessible for users with either the
+// moodle/site:configview or the tool/sherpa:manage capability (in addition to full admins).
+// As a settings/external page can only be guarded by a single capability, we pick the appropriate
+// one for the current user and pass it to the page later (cf. local_staticpage).
+$hasmanage = has_capability('tool/sherpa:manage', $systemcontext);
+if ($hasmanage) {
+    $managecapability = 'tool/sherpa:manage';
+} else {
+    $managecapability = 'moodle/site:configview';
+}
 
-    $settings->add(new admin_setting_heading(
-        'tool_sherpa/settingsheading',
-        get_string('settingsheading', 'tool_sherpa'),
-        get_string('settingsheading_desc', 'tool_sherpa')
+// Show the Sherpa section for full admins as well as for users allowed to manage or view it.
+if ($hassiteconfig || $hasmanage || has_capability('moodle/site:configview', $systemcontext)) {
+    // Own category (rendered as a section on the "General" tab of the site administration).
+    $ADMIN->add('root', new admin_category(
+        'tool_sherpa',
+        get_string('pluginname', 'tool_sherpa')
     ));
 
-    // Master switch for the whole plugin.
-    $settings->add(new admin_setting_configcheckbox(
-        'tool_sherpa/enabled',
-        get_string('enabled', 'tool_sherpa'),
-        get_string('enabled_desc', 'tool_sherpa'),
-        1
-    ));
+    // Settings page (full admins only).
+    if ($hassiteconfig) {
+        $settings = new admin_settingpage('tool_sherpa_settings', get_string('settings', 'core'));
 
-    // Replace the core help popover with the Sherpa modal. Default off (classic popover).
-    $settings->add(new admin_setting_configcheckbox(
-        'tool_sherpa/usemodal',
-        get_string('usemodal', 'tool_sherpa'),
-        get_string('usemodal_desc', 'tool_sherpa'),
-        0
-    ));
+        $settings->add(new admin_setting_heading(
+            'tool_sherpa/settingsheading',
+            get_string('settingsheading', 'tool_sherpa'),
+            get_string('settingsheading_desc', 'tool_sherpa')
+        ));
 
-    // Show the "further materials" region in the modal.
-    $settings->add(new admin_setting_configcheckbox(
-        'tool_sherpa/showmaterials',
-        get_string('showmaterials', 'tool_sherpa'),
-        get_string('showmaterials_desc', 'tool_sherpa'),
-        1
-    ));
+        // Master switch for the whole plugin.
+        $settings->add(new admin_setting_configcheckbox(
+            'tool_sherpa/enabled',
+            get_string('enabled', 'tool_sherpa'),
+            get_string('enabled_desc', 'tool_sherpa'),
+            1
+        ));
 
-    // Show the embedded AI chat region in the modal.
-    $settings->add(new admin_setting_configcheckbox(
-        'tool_sherpa/showchat',
-        get_string('showchat', 'tool_sherpa'),
-        get_string('showchat_desc', 'tool_sherpa'),
-        1
-    ));
+        // Replace the core help popover with the Sherpa modal. Default off (classic popover).
+        $settings->add(new admin_setting_configcheckbox(
+            'tool_sherpa/usemodal',
+            get_string('usemodal', 'tool_sherpa'),
+            get_string('usemodal_desc', 'tool_sherpa'),
+            0
+        ));
 
-    // Template used to build the field specific system prompt for the chat.
-    $settings->add(new admin_setting_configtextarea(
-        'tool_sherpa/systemprompttemplate',
-        get_string('systemprompttemplate', 'tool_sherpa'),
-        get_string('systemprompttemplate_desc', 'tool_sherpa'),
-        get_string('systemprompttemplate_default', 'tool_sherpa'),
-        PARAM_RAW
+        // Show the "further materials" region in the modal.
+        $settings->add(new admin_setting_configcheckbox(
+            'tool_sherpa/showmaterials',
+            get_string('showmaterials', 'tool_sherpa'),
+            get_string('showmaterials_desc', 'tool_sherpa'),
+            1
+        ));
+
+        // Show the embedded AI chat region in the modal.
+        $settings->add(new admin_setting_configcheckbox(
+            'tool_sherpa/showchat',
+            get_string('showchat', 'tool_sherpa'),
+            get_string('showchat_desc', 'tool_sherpa'),
+            1
+        ));
+
+        // Template used to build the field specific system prompt for the chat.
+        $settings->add(new admin_setting_configtextarea(
+            'tool_sherpa/systemprompttemplate',
+            get_string('systemprompttemplate', 'tool_sherpa'),
+            get_string('systemprompttemplate_desc', 'tool_sherpa'),
+            get_string('systemprompttemplate_default', 'tool_sherpa'),
+            PARAM_RAW
+        ));
+
+        $ADMIN->add('tool_sherpa', $settings);
+    }
+
+    // Management page for sources, placements and their mappings.
+    $ADMIN->add('tool_sherpa', new admin_externalpage(
+        'tool_sherpa_manage',
+        get_string('managesourcesandplacements', 'tool_sherpa'),
+        new moodle_url('/admin/tool/sherpa/manage.php'),
+        $managecapability
     ));
 }

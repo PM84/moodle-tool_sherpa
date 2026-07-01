@@ -43,6 +43,7 @@ $string['helpregiontitle'] = 'Help';
 $string['linkplacement'] = 'Link placement';
 $string['linksource'] = 'Link source';
 $string['manage'] = 'Manage Sherpa';
+$string['managesourcesandplacements'] = 'Manage sources and placements';
 $string['mappingexists'] = 'This source and placement are already mapped.';
 $string['materialsregiontitle'] = 'Further materials';
 $string['modifiedby'] = 'Modified by';

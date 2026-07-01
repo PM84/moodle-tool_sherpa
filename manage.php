@@ -45,10 +45,13 @@ echo $OUTPUT->heading(get_string('managesourcesandplacements', 'tool_sherpa'));
 
 // Offer the CSV import wizard to users who may manage the data.
 if (has_capability('tool/sherpa:manage', context_system::instance())) {
-    echo $OUTPUT->single_button(
-        new moodle_url('/admin/tool/sherpa/import.php'),
-        get_string('importtutorials', 'tool_sherpa'),
-        'get'
+    echo html_writer::div(
+        html_writer::link(
+            new moodle_url('/admin/tool/sherpa/import.php'),
+            get_string('importtutorials', 'tool_sherpa'),
+            ['class' => 'btn btn-outline-primary']
+        ),
+        'd-flex justify-content-end mb-2'
     );
 }
 

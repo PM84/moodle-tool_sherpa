@@ -58,7 +58,7 @@ class placement_form extends dynamic_form {
         $mform->addElement('text', 'value', get_string('value', 'tool_sherpa'), ['size' => 60]);
         $mform->setType('value', PARAM_RAW_TRIMMED);
         $mform->addRule('value', null, 'required', null, 'client');
-        $mform->addRule('value', get_string('maximumchars', '', 1333), 'maxlength', 1333);
+        $mform->addRule('value', get_string('maximumchars', '', 255), 'maxlength', 255);
     }
 
     /**

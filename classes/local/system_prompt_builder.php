@@ -75,6 +75,20 @@ class system_prompt_builder {
     }
 
     /**
+     * Build the system prompt string for a page (body id) placement.
+     *
+     * @param string $title the page help title
+     * @param string[] $urls the URLs of the mapped sources
+     * @return string the assembled system prompt
+     */
+    public static function build_for_page(string $title, array $urls): string {
+        return get_string('pagehelp_chatsystemprompt', 'tool_sherpa', (object) [
+            'title' => $title,
+            'urls' => implode(', ', $urls),
+        ]);
+    }
+
+    /**
      * Store the system prompt for later injection by the before_request hook.
      *
      * @param int $userid the user id the prompt belongs to

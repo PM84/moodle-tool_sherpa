@@ -31,6 +31,11 @@ $callbacks = [
         'hook' => \core\hook\output\before_help_icon_rendered::class,
         'callback' => \tool_sherpa\local\hook_callbacks::class . '::handle_before_help_icon_rendered',
     ],
+    // Inject a page level help button when tutorials are mapped to the current page's body id.
+    [
+        'hook' => \core\hook\output\before_footer_html_generation::class,
+        'callback' => \tool_sherpa\local\hook_callbacks::class . '::inject_page_help',
+    ],
     // Inject the field specific system prompt into the AI chat request (no persona needed).
     [
         'hook' => \local_ai_manager\hook\before_request::class,

@@ -14,24 +14,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+declare(strict_types=1);
+
+namespace tool_sherpa\form;
+
 /**
- * Version information for tool_sherpa.
+ * Step 1 of the tutorial import: upload a CSV file.
  *
  * @package    tool_sherpa
  * @copyright  2026 ISB Bayern
  * @author     Dr. Peter Mayer
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class import_upload_form extends \moodleform {
 
-defined('MOODLE_INTERNAL') || die();
+    /**
+     * Form definition.
+     */
+    public function definition() {
+        $mform = $this->_form;
 
-$plugin->version = 2026070102;
-$plugin->requires = 2025100600;
-$plugin->supported = [500, 501];
-$plugin->component = 'tool_sherpa';
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.5.0';
-$plugin->dependencies = [
-    'local_ai_manager' => 2026050500,
-    'block_ai_chat' => 2026050800,
-];
+        $mform->addElement(
+            'filepicker',
+            'csvfile',
+            get_string('csvfile', 'tool_sherpa'),
+            null,
+            ['accepted_types' => ['.csv', '.txt']]
+        );
+        $mform->addRule('csvfile', null, 'required', null, 'client');
+        $mform->addHelpButton('csvfile', 'csvfile', 'tool_sherpa');
+
+        $this->add_action_buttons(true, get_string('continue'));
+    }
+}

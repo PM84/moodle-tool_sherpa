@@ -51,6 +51,20 @@ const fetchContent = (component, identifier, contextid) => {
 };
 
 /**
+ * Fetch the lazy loaded page level help content from the server.
+ *
+ * @param {String} bodyid The HTML body id of the current page.
+ * @param {Number} contextid The context id.
+ * @returns {Promise<Object>} The modal payload.
+ */
+const fetchPageContent = (bodyid, contextid) => {
+    return Ajax.call([{
+        methodname: 'tool_sherpa_get_page_help_content',
+        args: {bodyid, contextid},
+    }])[0];
+};
+
+/**
  * Copy the server rendered help text from the trigger's hidden template into the help region.
  *
  * @param {HTMLElement} root The modal root element.
@@ -138,6 +152,51 @@ export const open = async(trigger) => {
         // Lazy load materials and chat from the server.
         if (showmaterials || chatavailable) {
             const content = await fetchContent(data.component, data.identifier, contextid);
+            if (showmaterials) {
+                await renderMaterials(root, content.sources);
+            }
+            if (chatavailable && content.chatavailable) {
+                await mountChat(root, contextid);
+            }
+        }
+    } catch (error) {
+        displayException(error);
+    } finally {
+        pending.resolve();
+    }
+};
+
+/**
+ * Open the page level help modal for a floating page help button.
+ *
+ * Unlike {@link open} there is no page specific help text region; the modal only shows the mapped
+ * tutorials (materials) and, when available, the embedded chat.
+ *
+ * @param {HTMLElement} trigger The activated page help button.
+ */
+export const openPageHelp = async(trigger) => {
+    const pending = new Pending('tool_sherpa/help_modal:openPageHelp');
+    try {
+        const data = trigger.dataset;
+        const title = data.title || '';
+        const contextid = parseInt(data.contextid, 10);
+        const showmaterials = data.showmaterials === '1';
+        const chatavailable = data.chatavailable === '1';
+
+        const body = await Templates.render('tool_sherpa/help_modal_body', {});
+        if (!modal) {
+            modal = await Modal.create({title, body, large: true, removeOnClose: false});
+        } else {
+            modal.setTitle(title);
+            modal.setBody(body);
+        }
+
+        const root = modal.getRoot()[0];
+        await modal.show();
+
+        // Lazy load materials and chat from the server.
+        if (showmaterials || chatavailable) {
+            const content = await fetchPageContent(data.bodyid, contextid);
             if (showmaterials) {
                 await renderMaterials(root, content.sources);
             }

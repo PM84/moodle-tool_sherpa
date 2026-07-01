@@ -57,4 +57,72 @@ class source_provider {
             'value' => $value,
         ]);
     }
+
+    /**
+     * Get the sources mapped to the body id placements matching the current page.
+     *
+     * A body id placement value is either an exact body id (e.g. "page-login-index") or a pattern
+     * containing a single "*" wildcard that matches any suffix (e.g. "page-course-view-*"). The
+     * matching is performed in PHP to stay database independent.
+     *
+     * @param string $bodyid the HTML body id of the current page
+     * @return array list of source records (id, url), empty if materials are disabled or none match
+     */
+    public static function get_sources_for_bodyid(string $bodyid): array {
+        global $DB;
+
+        if (!get_config('tool_sherpa', 'showmaterials')) {
+            return [];
+        }
+
+        $bodyid = trim($bodyid);
+        if ($bodyid === '') {
+            return [];
+        }
+
+        $placements = $DB->get_records('tool_sherpa_placement', ['type' => placement::TYPE_BODYID], '', 'id, value');
+
+        $matchingids = [];
+        foreach ($placements as $placement) {
+            if (self::bodyid_matches($bodyid, (string) $placement->value)) {
+                $matchingids[] = (int) $placement->id;
+            }
+        }
+
+        if (empty($matchingids)) {
+            return [];
+        }
+
+        [$insql, $inparams] = $DB->get_in_or_equal($matchingids, SQL_PARAMS_NAMED);
+        $sql = "SELECT DISTINCT s.id, s.url
+                  FROM {tool_sherpa_source} s
+                  JOIN {tool_sherpa_mapping} m ON m.source = s.id
+                 WHERE m.placement {$insql}
+              ORDER BY s.id ASC";
+
+        return $DB->get_records_sql($sql, $inparams);
+    }
+
+    /**
+     * Whether a concrete body id matches a body id placement pattern.
+     *
+     * The pattern may contain a single "*" wildcard standing for any (possibly empty) suffix.
+     *
+     * @param string $bodyid the concrete body id of the current page
+     * @param string $pattern the placement value (exact body id or "*" pattern)
+     * @return bool true if the pattern matches the body id
+     */
+    private static function bodyid_matches(string $bodyid, string $pattern): bool {
+        $pattern = trim($pattern);
+        if ($pattern === '') {
+            return false;
+        }
+
+        if (!str_contains($pattern, '*')) {
+            return $pattern === $bodyid;
+        }
+
+        $regex = '/^' . str_replace('\*', '.*', preg_quote($pattern, '/')) . '$/';
+        return (bool) preg_match($regex, $bodyid);
+    }
 }

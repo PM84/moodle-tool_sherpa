@@ -56,4 +56,34 @@ class help_modal_manager {
             'sources' => $sources,
         ];
     }
+
+    /**
+     * Build the page level help payload for a body id and store the page chat system prompt.
+     *
+     * @param string $bodyid the HTML body id of the current page
+     * @param context $context the context of the current page
+     * @return array the payload for the external function
+     */
+    public static function get_page_help_payload(string $bodyid, context $context): array {
+        global $USER;
+
+        $sources = [];
+        $urls = [];
+        foreach (source_provider::get_sources_for_bodyid($bodyid) as $source) {
+            $sources[] = ['url' => $source->url];
+            $urls[] = $source->url;
+        }
+
+        $chatavailable = support_manager::chat_available($context);
+        if ($chatavailable) {
+            $prompt = system_prompt_builder::build_for_page(get_string('pagehelp_title', 'tool_sherpa'), $urls);
+            system_prompt_builder::store($USER->id, $context, $prompt);
+        }
+
+        return [
+            'title' => get_string('pagehelp_title', 'tool_sherpa'),
+            'chatavailable' => $chatavailable,
+            'sources' => $sources,
+        ];
+    }
 }

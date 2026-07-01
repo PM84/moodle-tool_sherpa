@@ -51,9 +51,33 @@ if ($hassiteconfig || has_capability('moodle/site:configview', $systemcontext)) 
         $settings = new admin_settingpage('tool_sherpa_settings', get_string('settings', 'core'));
 
         $settings->add(new admin_setting_heading(
-                'tool_sherpa/settingsheading',
-                get_string('settings:heading', 'tool_sherpa'),
-                get_string('settings:heading_desc', 'tool_sherpa')
+            'tool_sherpa/settingsheading',
+            get_string('settingsheading', 'tool_sherpa'),
+            get_string('settingsheading_desc', 'tool_sherpa')
+        ));
+
+        // Offer the "Help, what should I do?" entry in the activity chooser. Default off.
+        $settings->add(new admin_setting_configcheckbox(
+            'tool_sherpa/enablehelpchooser',
+            get_string('enablehelpchooser', 'tool_sherpa'),
+            get_string('enablehelpchooser_desc', 'tool_sherpa'),
+            0
+        ));
+
+        // Offer a page level help button on pages that have tutorials mapped to their body id. Default off.
+        $settings->add(new admin_setting_configcheckbox(
+            'tool_sherpa/enablepagehelp',
+            get_string('enablepagehelp', 'tool_sherpa'),
+            get_string('enablepagehelp_desc', 'tool_sherpa'),
+            0
+        ));
+
+        // Replace the core help popover with the Sherpa modal. Default off (classic popover).
+        $settings->add(new admin_setting_configcheckbox(
+            'tool_sherpa/usemodal',
+            get_string('usemodal', 'tool_sherpa'),
+            get_string('usemodal_desc', 'tool_sherpa'),
+            0
         ));
 
         // Master switch for the whole plugin.
@@ -119,5 +143,13 @@ if ($hassiteconfig || has_capability('moodle/site:configview', $systemcontext)) 
             get_string('managesourcesandplacements', 'tool_sherpa'),
             new moodle_url('/admin/tool/sherpa/manage.php'),
             $managecapability
+    ));
+
+    // CSV import wizard for tutorials (writes data, hence guarded by the manage capability).
+    $ADMIN->add('tool_sherpa', new admin_externalpage(
+        'tool_sherpa_import',
+        get_string('importtutorials', 'tool_sherpa'),
+        new moodle_url('/admin/tool/sherpa/import.php'),
+        'tool/sherpa:manage'
     ));
 }

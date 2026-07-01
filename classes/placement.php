@@ -39,6 +39,9 @@ class placement {
     /** @var string Placement attached to a path. */
     public const TYPE_PATH = 'path';
 
+    /** @var string Placement attached to a page, identified by its HTML body id (supports a "*" wildcard). */
+    public const TYPE_BODYID = 'bodyid';
+
     /**
      * Returns the list of all available placement types.
      *
@@ -49,6 +52,7 @@ class placement {
             self::TYPE_FORMELEMENT,
             self::TYPE_LANGSTRING,
             self::TYPE_PATH,
+            self::TYPE_BODYID,
         ];
     }
 }

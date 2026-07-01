@@ -1,4 +1,3 @@
-<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,23 +14,38 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for tool_sherpa.
+ * Trigger for the floating page level help button.
  *
- * @package    tool_sherpa
+ * A click on the page help button opens the Sherpa modal with the tutorials mapped to the current
+ * page's body id.
+ *
+ * @module     tool_sherpa/page_help_trigger
  * @copyright  2026 ISB Bayern
  * @author     Dr. Peter Mayer
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+import * as HelpModal from 'tool_sherpa/help_modal';
 
-$plugin->version = 2026070102;
-$plugin->requires = 2025100600;
-$plugin->supported = [500, 501];
-$plugin->component = 'tool_sherpa';
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.5.0';
-$plugin->dependencies = [
-    'local_ai_manager' => 2026050500,
-    'block_ai_chat' => 2026050800,
-];
+const SELECTOR = '[data-action="tool-sherpa-page-help"]';
+
+let initialised = false;
+
+/**
+ * Initialise the delegated event listener (idempotent).
+ */
+export const init = () => {
+    if (initialised) {
+        return;
+    }
+    initialised = true;
+
+    document.addEventListener('click', (e) => {
+        const trigger = e.target.closest(SELECTOR);
+        if (!trigger) {
+            return;
+        }
+        e.preventDefault();
+        HelpModal.openPageHelp(trigger);
+    });
+};

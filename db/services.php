@@ -53,6 +53,15 @@ $functions = [
         'ajax'        => true,
         'capabilities' => 'tool/sherpa:usesupport',
     ],
+    'tool_sherpa_get_page_help_content' => [
+        'classname'   => 'tool_sherpa\external\get_page_help_content',
+        'methodname'  => 'execute',
+        'description' => 'Get the page level help content (materials, chat availability) for a body id '
+            . 'and store the page chat system prompt.',
+        'type'        => 'read',
+        'ajax'        => true,
+        'capabilities' => 'tool/sherpa:usesupport',
+    ],
     'tool_sherpa_prepare_chooser_chat' => [
         'classname'   => 'tool_sherpa\external\prepare_chooser_chat',
         'methodname'  => 'execute',

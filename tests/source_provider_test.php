@@ -92,4 +92,65 @@ final class source_provider_test extends \advanced_testcase {
 
         $this->assertSame([], source_provider::get_sources_for_help('moodle', 'coursevisibility'));
     }
+
+    /**
+     * Insert a source mapped to a body id placement.
+     *
+     * @param string $value the placement value (exact body id or "*" pattern)
+     * @param string $url the source url
+     */
+    private function map_bodyid_source(string $value, string $url): void {
+        global $DB;
+        $sourceid = $DB->insert_record('tool_sherpa_source', (object) ['title' => 'Example source', 'url' => $url]);
+        $placementid = $DB->insert_record('tool_sherpa_placement', (object) [
+            'type' => placement::TYPE_BODYID,
+            'value' => $value,
+        ]);
+        $DB->insert_record('tool_sherpa_mapping', (object) [
+            'placement' => $placementid,
+            'source' => $sourceid,
+        ]);
+    }
+
+    /**
+     * An exact body id placement matches the identical body id.
+     *
+     * @covers \tool_sherpa\local\source_provider::get_sources_for_bodyid
+     */
+    public function test_get_sources_for_bodyid_exact_match(): void {
+        set_config('showmaterials', 1, 'tool_sherpa');
+        $this->map_bodyid_source('page-login-index', 'https://example.org/login');
+
+        $sources = source_provider::get_sources_for_bodyid('page-login-index');
+
+        $this->assertCount(1, $sources);
+        $source = reset($sources);
+        $this->assertEquals('https://example.org/login', $source->url);
+    }
+
+    /**
+     * A wildcard body id placement matches any suffix.
+     *
+     * @covers \tool_sherpa\local\source_provider::get_sources_for_bodyid
+     */
+    public function test_get_sources_for_bodyid_wildcard_match(): void {
+        set_config('showmaterials', 1, 'tool_sherpa');
+        $this->map_bodyid_source('page-course-view-*', 'https://example.org/course');
+
+        $this->assertCount(1, source_provider::get_sources_for_bodyid('page-course-view-topics'));
+        $this->assertCount(1, source_provider::get_sources_for_bodyid('page-course-view-weeks'));
+        $this->assertSame([], source_provider::get_sources_for_bodyid('page-mod-quiz-view'));
+    }
+
+    /**
+     * No sources are returned for body ids when the materials region is disabled.
+     *
+     * @covers \tool_sherpa\local\source_provider::get_sources_for_bodyid
+     */
+    public function test_get_sources_for_bodyid_disabled(): void {
+        set_config('showmaterials', 0, 'tool_sherpa');
+        $this->map_bodyid_source('page-login-index', 'https://example.org/login');
+
+        $this->assertSame([], source_provider::get_sources_for_bodyid('page-login-index'));
+    }
 }

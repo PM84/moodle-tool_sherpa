@@ -68,3 +68,11 @@
     height: 5rem;
     background: linear-gradient(135deg, #dee2e6, #adb5bd);
 }
+
+/* Floating page level help button. */
+.tool-sherpa-page-help {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1030;
+}

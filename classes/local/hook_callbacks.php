@@ -17,6 +17,7 @@
 namespace tool_sherpa\local;
 
 use core\hook\output\before_help_icon_rendered;
+use core\hook\output\before_footer_html_generation;
 use local_ai_manager\hook\before_request;
 
 /**
@@ -62,6 +63,45 @@ class hook_callbacks {
             $PAGE->requires->js_call_amd('tool_sherpa/help_icon_trigger', 'init');
             self::$amdloaded = true;
         }
+    }
+
+    /**
+     * Inject a page level help button when tutorials are mapped to the current page's body id.
+     *
+     * @param before_footer_html_generation $hook the footer generation hook
+     */
+    public static function inject_page_help(before_footer_html_generation $hook): void {
+        global $PAGE, $OUTPUT;
+
+        if (!get_config('tool_sherpa', 'enabled') || !get_config('tool_sherpa', 'enablepagehelp')) {
+            return;
+        }
+
+        $context = $PAGE->context ?? \context_system::instance();
+        if (!has_capability('tool/sherpa:usesupport', $context)) {
+            return;
+        }
+
+        $bodyid = (string) $PAGE->bodyid;
+        if ($bodyid === '') {
+            return;
+        }
+
+        if (empty(source_provider::get_sources_for_bodyid($bodyid))) {
+            return;
+        }
+
+        $templatecontext = (object) [
+            'bodyid' => $bodyid,
+            'contextid' => $context->id,
+            'title' => get_string('pagehelp_title', 'tool_sherpa'),
+            'label' => get_string('pagehelp_buttonlabel', 'tool_sherpa'),
+            'chatavailable' => support_manager::chat_available($context),
+            'showmaterials' => (bool) get_config('tool_sherpa', 'showmaterials'),
+        ];
+
+        $hook->add_html($OUTPUT->render_from_template('tool_sherpa/page_help_button', $templatecontext));
+        $PAGE->requires->js_call_amd('tool_sherpa/page_help_trigger', 'init');
     }
 
     /**

@@ -70,6 +70,7 @@ final class get_help_modal_content_test extends \advanced_testcase {
         $this->assertFalse($result['chatavailable']);
         $this->assertCount(1, $result['sources']);
         $this->assertSame('https://example.org/x', $result['sources'][0]['url']);
+        $this->assertSame('Example source', $result['sources'][0]['title']);
     }
 
     /**

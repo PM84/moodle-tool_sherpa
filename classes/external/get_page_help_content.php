@@ -75,6 +75,7 @@ class get_page_help_content extends external_api {
             'chatavailable' => new external_value(PARAM_BOOL, 'Whether the chat region is available'),
             'sources' => new external_multiple_structure(new external_single_structure([
                 'url' => new external_value(PARAM_URL, 'Source URL'),
+                'title' => new external_value(PARAM_TEXT, 'Source title (empty if none set)'),
             ])),
         ]);
     }

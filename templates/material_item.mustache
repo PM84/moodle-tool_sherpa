@@ -20,16 +20,18 @@
     A single support material (source) rendered as a safe external link.
 
     Context variables required for this template:
-    * url The source URL.
+    * url The source URL (used as the link target and as the fallback label).
+    * title The source title (shown as the link label; falls back to the URL when empty).
 
     Example context (json):
     {
-        "url": "https://example.org/tutorial"
+        "url": "https://example.org/tutorial",
+        "title": "Create a course"
     }
 }}
 <li class="tool-sherpa-material">
     <a href="{{url}}" target="_blank" rel="noopener noreferrer">
-        {{url}}
+        {{#title}}{{title}}{{/title}}{{^title}}{{url}}{{/title}}
         <span class="sr-only">{{#str}} opensinnewtab, tool_sherpa {{/str}}</span>
     </a>
 </li>

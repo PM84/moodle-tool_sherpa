@@ -45,7 +45,7 @@ class source_provider {
         }
 
         $value = $identifier . ',' . $component;
-        $sql = "SELECT s.id, s.url
+        $sql = "SELECT s.id, s.title, s.url
                   FROM {tool_sherpa_source} s
                   JOIN {tool_sherpa_mapping} m ON m.source = s.id
                   JOIN {tool_sherpa_placement} p ON p.id = m.placement
@@ -94,7 +94,7 @@ class source_provider {
         }
 
         [$insql, $inparams] = $DB->get_in_or_equal($matchingids, SQL_PARAMS_NAMED);
-        $sql = "SELECT DISTINCT s.id, s.url
+        $sql = "SELECT DISTINCT s.id, s.title, s.url
                   FROM {tool_sherpa_source} s
                   JOIN {tool_sherpa_mapping} m ON m.source = s.id
                  WHERE m.placement {$insql}

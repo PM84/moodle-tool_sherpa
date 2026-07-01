@@ -45,19 +45,20 @@ class help_modal_manager {
         global $USER;
 
         // Materials mapped to this help field, plus the materials mapped to the current page's body id.
-        $urls = [];
+        // Keyed by URL to deduplicate; the first occurrence's title wins.
+        $materials = [];
         foreach (source_provider::get_sources_for_help($component, $identifier) as $source) {
-            $urls[$source->url] = true;
+            $materials[$source->url] ??= (string) $source->title;
         }
         if ($bodyid !== '') {
             foreach (source_provider::get_sources_for_bodyid($bodyid) as $source) {
-                $urls[$source->url] = true;
+                $materials[$source->url] ??= (string) $source->title;
             }
         }
 
         $sources = [];
-        foreach (array_keys($urls) as $url) {
-            $sources[] = ['url' => $url];
+        foreach ($materials as $url => $title) {
+            $sources[] = ['url' => $url, 'title' => $title];
         }
 
         $chatavailable = support_manager::chat_available($context);
@@ -87,7 +88,7 @@ class help_modal_manager {
         $sources = [];
         $urls = [];
         foreach (source_provider::get_sources_for_bodyid($bodyid) as $source) {
-            $sources[] = ['url' => $source->url];
+            $sources[] = ['url' => $source->url, 'title' => (string) $source->title];
             $urls[] = $source->url;
         }
 

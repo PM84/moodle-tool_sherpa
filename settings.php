@@ -82,6 +82,15 @@ if ($hassiteconfig || $hasmanage || has_capability('moodle/site:configview', $sy
         ));
         $settings->hide_if('tool_sherpa/showmaterials', 'tool_sherpa/enabled');
 
+        // Offer a page level help button on pages that have tutorials mapped to their body id. Default off.
+        $settings->add(new admin_setting_configcheckbox(
+                'tool_sherpa/enablepagehelp',
+                get_string('settings:enablepagehelp', 'tool_sherpa'),
+                get_string('settings:enablepagehelp_desc', 'tool_sherpa'),
+                0
+        ));
+        $settings->hide_if('tool_sherpa/enablepagehelp', 'tool_sherpa/enabled');
+
         // Show the embedded AI chat region in the modal.
         $settings->add(new admin_setting_configcheckbox(
             'tool_sherpa/showchat',
@@ -99,15 +108,6 @@ if ($hassiteconfig || $hasmanage || has_capability('moodle/site:configview', $sy
             0
         ));
         $settings->hide_if('tool_sherpa/enablehelpchooser', 'tool_sherpa/showchat');
-
-        // Offer a page level help button on pages that have tutorials mapped to their body id. Default off.
-        $settings->add(new admin_setting_configcheckbox(
-            'tool_sherpa/enablepagehelp',
-            get_string('settings:enablepagehelp', 'tool_sherpa'),
-            get_string('settings:enablepagehelp_desc', 'tool_sherpa'),
-            0
-        ));
-        $settings->hide_if('tool_sherpa/enablepagehelp', 'tool_sherpa/enabled');
 
         // Template used to build the field specific system prompt for the chat.
         $settings->add(new admin_setting_configtextarea(

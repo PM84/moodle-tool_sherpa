@@ -43,11 +43,6 @@ $string['editsource'] = 'Edit source';
 $string['editurl'] = 'Edit URL';
 $string['editvalue'] = 'Edit value';
 $string['enabled'] = 'Enable Sherpa';
-$string['enabled_desc'] = 'If enabled, Sherpa provides individual AI based support throughout the site.';
-$string['enablehelpchooser'] = 'Enable "Help, what should I do?"';
-$string['enablehelpchooser_desc'] = 'If enabled, teachers see a "Help, what should I do?" option in the activity chooser that opens an AI assisted activity chooser.';
-$string['enablepagehelp'] = 'Enable page help button';
-$string['enablepagehelp_desc'] = 'If enabled, a help button is shown on pages that have tutorials mapped to their body id (placement type "Page (body id)"). The button opens the Sherpa modal with the matching tutorials.';
 $string['helpchooser_chatsystemprompt'] = 'You are "Sherpa", a friendly didactic assistant embedded in the Moodle activity chooser. A teacher is planning what to do in their course. Discuss their ideas with them, ask brief clarifying questions when helpful, and recommend which of the available Moodle activities fit their goal, explaining why and how they could use each one.
 
 Available activities (modname: name):
@@ -97,12 +92,12 @@ $string['placementdeleted'] = 'Placement deleted';
 $string['placements'] = 'Placements';
 $string['pluginname'] = 'Sherpa';
 $string['privacy:metadata'] = 'The Sherpa tool does not store any personal data itself. Support requests are processed and logged by the local_ai_manager subsystem.';
-$string['sherpa:manage'] = 'Manage Sherpa sources and placements';
-$string['sherpa:usesupport'] = 'Use Sherpa support';
 $string['settings:enabled'] = 'Enable Sherpa';
 $string['settings:enabled_desc'] = 'If enabled, Sherpa provides custom configurable support throughout the site.';
 $string['settings:enablehelpchooser'] = 'Enable "Help, what should I do?"';
 $string['settings:enablehelpchooser_desc'] = 'If enabled, teachers see a "Help, what should I do?" option in the activity chooser that opens an AI assisted activity chooser.';
+$string['settings:enablepagehelp'] = 'Enable page help button';
+$string['settings:enablepagehelp_desc'] = 'If enabled, a help button is shown on pages that have tutorials mapped to their body id (placement type "Page (body id)"). The button opens the Sherpa modal with the matching tutorials.';
 $string['settings:heading'] = 'Sherpa support assistant';
 $string['settings:heading_desc'] = 'Sherpa provides individual support at various places in the user interface, such as help icons.';
 $string['settings:showchat'] = 'Show AI chat';
@@ -122,6 +117,8 @@ Answer in simple, clear language and stay within the given context.';
 $string['settings:systemprompttemplate_desc'] = 'Template for the field specific system prompt sent to the AI chat. Placeholders: {title}, {component}, {identifier}, {helptext_plain}, {source_urls}.';
 $string['settings:usemodal'] = 'Open help in a modal';
 $string['settings:usemodal_desc'] = 'If enabled, clicking a core help icon opens a Sherpa modal instead of the popover. Default: classic popover.';
+$string['sherpa:manage'] = 'Manage Sherpa sources and placements';
+$string['sherpa:usesupport'] = 'Use Sherpa support';
 $string['sourcedeleted'] = 'Source deleted';
 $string['sources'] = 'Sources';
 $string['timecreated'] = 'Time created';

@@ -39,11 +39,11 @@ if ($hasmanage) {
 }
 
 // Show the Sherpa section for full admins as well as for users allowed to manage or view it.
-if ($hassiteconfig || has_capability('moodle/site:configview', $systemcontext)) {
-    // Own category (rendered as a section on the "General" tab of the site administration).
-    $ADMIN->add('root', new admin_category(
-            'tool_sherpa',
-            get_string('pluginname', 'tool_sherpa')
+if ($hassiteconfig || $hasmanage || has_capability('moodle/site:configview', $systemcontext)) {
+    // Own category, listed under "Plugins > Admin tools" (the "tools" node).
+    $ADMIN->add('tools', new admin_category(
+        'tool_sherpa',
+        get_string('pluginname', 'tool_sherpa')
     ));
 
     // Settings page (full admins only).
@@ -52,85 +52,70 @@ if ($hassiteconfig || has_capability('moodle/site:configview', $systemcontext)) 
 
         $settings->add(new admin_setting_heading(
             'tool_sherpa/settingsheading',
-            get_string('settingsheading', 'tool_sherpa'),
-            get_string('settingsheading_desc', 'tool_sherpa')
+            get_string('settings:heading', 'tool_sherpa'),
+            get_string('settings:heading_desc', 'tool_sherpa')
         ));
 
-        // Offer the "Help, what should I do?" entry in the activity chooser. Default off.
+        // Master switch for the whole plugin.
         $settings->add(new admin_setting_configcheckbox(
-            'tool_sherpa/enablehelpchooser',
-            get_string('enablehelpchooser', 'tool_sherpa'),
-            get_string('enablehelpchooser_desc', 'tool_sherpa'),
-            0
-        ));
-
-        // Offer a page level help button on pages that have tutorials mapped to their body id. Default off.
-        $settings->add(new admin_setting_configcheckbox(
-            'tool_sherpa/enablepagehelp',
-            get_string('enablepagehelp', 'tool_sherpa'),
-            get_string('enablepagehelp_desc', 'tool_sherpa'),
+            'tool_sherpa/enabled',
+            get_string('settings:enabled', 'tool_sherpa'),
+            get_string('settings:enabled_desc', 'tool_sherpa'),
             0
         ));
 
         // Replace the core help popover with the Sherpa modal. Default off (classic popover).
         $settings->add(new admin_setting_configcheckbox(
             'tool_sherpa/usemodal',
-            get_string('usemodal', 'tool_sherpa'),
-            get_string('usemodal_desc', 'tool_sherpa'),
+            get_string('settings:usemodal', 'tool_sherpa'),
+            get_string('settings:usemodal_desc', 'tool_sherpa'),
             0
-        ));
-
-        // Master switch for the whole plugin.
-        $settings->add(new admin_setting_configcheckbox(
-                'tool_sherpa/enabled',
-                get_string('settings:enabled', 'tool_sherpa'),
-                get_string('settings:enabled_desc', 'tool_sherpa'),
-                0
-        ));
-
-        // Replace the core help popover with the Sherpa modal. Default off (classic popover).
-        $settings->add(new admin_setting_configcheckbox(
-                'tool_sherpa/usemodal',
-                get_string('settings:usemodal', 'tool_sherpa'),
-                get_string('settings:usemodal_desc', 'tool_sherpa'),
-                0
         ));
         $settings->hide_if('tool_sherpa/usemodal', 'tool_sherpa/enabled');
 
         // Show the "further materials" region in the modal.
         $settings->add(new admin_setting_configcheckbox(
-                'tool_sherpa/showmaterials',
-                get_string('settings:showmaterials', 'tool_sherpa'),
-                get_string('settings:showmaterials_desc', 'tool_sherpa'),
-                0
+            'tool_sherpa/showmaterials',
+            get_string('settings:showmaterials', 'tool_sherpa'),
+            get_string('settings:showmaterials_desc', 'tool_sherpa'),
+            0
         ));
         $settings->hide_if('tool_sherpa/showmaterials', 'tool_sherpa/enabled');
 
         // Show the embedded AI chat region in the modal.
         $settings->add(new admin_setting_configcheckbox(
-                'tool_sherpa/showchat',
-                get_string('settings:showchat', 'tool_sherpa'),
-                get_string('settings:showchat_desc', 'tool_sherpa'),
-                0
+            'tool_sherpa/showchat',
+            get_string('settings:showchat', 'tool_sherpa'),
+            get_string('settings:showchat_desc', 'tool_sherpa'),
+            0
         ));
         $settings->hide_if('tool_sherpa/showchat', 'tool_sherpa/enabled');
 
         // Offer the "Help, what should I do?" entry in the activity chooser. Default off.
         $settings->add(new admin_setting_configcheckbox(
-                'tool_sherpa/enablehelpchooser',
-                get_string('settings:enablehelpchooser', 'tool_sherpa'),
-                get_string('settings:enablehelpchooser_desc', 'tool_sherpa'),
-                0
+            'tool_sherpa/enablehelpchooser',
+            get_string('settings:enablehelpchooser', 'tool_sherpa'),
+            get_string('settings:enablehelpchooser_desc', 'tool_sherpa'),
+            0
         ));
         $settings->hide_if('tool_sherpa/enablehelpchooser', 'tool_sherpa/showchat');
 
+        // Offer a page level help button on pages that have tutorials mapped to their body id. Default off.
+        $settings->add(new admin_setting_configcheckbox(
+            'tool_sherpa/enablepagehelp',
+            get_string('settings:enablepagehelp', 'tool_sherpa'),
+            get_string('settings:enablepagehelp_desc', 'tool_sherpa'),
+            0
+        ));
+        $settings->hide_if('tool_sherpa/enablepagehelp', 'tool_sherpa/enabled');
+
         // Template used to build the field specific system prompt for the chat.
         $settings->add(new admin_setting_configtextarea(
-                'tool_sherpa/systemprompttemplate',
-                get_string('settings:systemprompttemplate', 'tool_sherpa'),
-                get_string('settings:systemprompttemplate_desc', 'tool_sherpa'),
-                get_string('settings:systemprompttemplate_default', 'tool_sherpa'),
-                PARAM_RAW
+            'tool_sherpa/systemprompttemplate',
+            get_string('settings:systemprompttemplate', 'tool_sherpa'),
+            get_string('settings:systemprompttemplate_desc', 'tool_sherpa'),
+            get_string('settings:systemprompttemplate_default', 'tool_sherpa'),
+            PARAM_RAW
         ));
         $settings->hide_if('tool_sherpa/systemprompttemplate', 'tool_sherpa/showchat');
 
@@ -139,10 +124,10 @@ if ($hassiteconfig || has_capability('moodle/site:configview', $systemcontext)) 
 
     // Management page for sources, placements and their mappings.
     $ADMIN->add('tool_sherpa', new admin_externalpage(
-            'tool_sherpa_manage',
-            get_string('managesourcesandplacements', 'tool_sherpa'),
-            new moodle_url('/admin/tool/sherpa/manage.php'),
-            $managecapability
+        'tool_sherpa_manage',
+        get_string('managesourcesandplacements', 'tool_sherpa'),
+        new moodle_url('/admin/tool/sherpa/manage.php'),
+        $managecapability
     ));
 
     // CSV import wizard for tutorials (writes data, hence guarded by the manage capability).

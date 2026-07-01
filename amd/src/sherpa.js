@@ -93,7 +93,7 @@ define([
          */
         const initTourQueue = function (courseid) {
             Ajax.call([{
-                methodname: 'block_teacher_tours_get_pending_tours',
+                methodname: 'tool_sherpa_get_pending_tours',
                 args: {
                     courseid: courseid,
                     shownids: JSON.stringify(shownTourIds)
@@ -264,7 +264,7 @@ define([
          */
         const startCustomTourFromQueue = function (customTourId) {
             Ajax.call([{
-                methodname: 'block_teacher_tours_start_custom_tour',
+                methodname: 'tool_sherpa_start_custom_tour',
                 args: { customtourid: customTourId }
             }])[0].done(function (response) {
                 if (response.success && response.tourid) {
@@ -329,8 +329,8 @@ define([
         const handleTourToggle = function (tourId, enabled, tourType) {
             // Determine which endpoint to call based on tour type
             const methodname = tourType === 'custom'
-                ? 'block_teacher_tours_toggle_custom_tour_enabled'
-                : 'block_teacher_tours_toggle_tour_enabled';
+                ? 'tool_sherpa_toggle_custom_tour_enabled'
+                : 'tool_sherpa_toggle_tour_enabled';
 
             // Make AJAX call to backend to save the state
             Ajax.call([{
@@ -343,13 +343,13 @@ define([
                     const statusElement = tourCard.find('.tour-status');
 
                     if (response.enabled) {
-                        Str.get_string('enabled', 'block_teacher_tours')
+                        Str.get_string('enabled', 'tool_sherpa')
                             .then(function (enabledText) {
                                 statusElement.html('<i class="fa fa-check-circle text-success"></i> ' + enabledText);
                             });
                         tourCard.find('.tour-toggle').prop('checked', true);
                     } else {
-                        Str.get_string('disabled', 'block_teacher_tours')
+                        Str.get_string('disabled', 'tool_sherpa')
                             .then(function (disabledText) {
                                 statusElement.html('<i class="fa fa-times-circle text-muted"></i> ' + disabledText);
                             });
@@ -381,8 +381,8 @@ define([
             if (confirm('Are you sure you want to delete this tour? This action cannot be undone.')) {
                 // Determine which endpoint to call based on tour type
                 const methodname = tourType === 'custom'
-                    ? 'block_teacher_tours_delete_custom_tour'
-                    : 'block_teacher_tours_delete_tour';
+                    ? 'tool_sherpa_delete_custom_tour'
+                    : 'tool_sherpa_delete_tour';
 
                 // Make AJAX call to backend to delete the tour
                 Ajax.call([{
@@ -809,7 +809,7 @@ define([
 
                 // Get custom tour config by its ID (no core table records created)
                 Ajax.call([{
-                    methodname: 'block_teacher_tours_start_custom_tour',
+                    methodname: 'tool_sherpa_start_custom_tour',
                     args: { customtourid: parseInt(customtourid, 10) },
                 }])[0].then(function (response) {
                     if (response.success && response.tourconfig) {
@@ -878,12 +878,12 @@ define([
         const addStickyButton = function (element) {
             if (element.classList.contains('section-sticky-highlight')) {
                 element.classList.add('section-sticky-button-temp');
-                Str.get_string('selectplacement', 'block_teacher_tours').then(function (text) {
+                Str.get_string('selectplacement', 'tool_sherpa').then(function (text) {
                     element.html(text);
                 });
             } else if (element.classList.contains('header-sticky-highlight')) {
                 element.classList.add('header-sticky-button-temp');
-                Str.get_string('selectplacement', 'block_teacher_tours').then(function (text) {
+                Str.get_string('selectplacement', 'tool_sherpa').then(function (text) {
                     element.html(text);
                 });
             }
@@ -913,7 +913,7 @@ define([
         };
 
         const setPlacements = function (placementid, customtourid) {
-            Str.get_string('touravailable', 'block_teacher_tours').then(function (text) {
+            Str.get_string('touravailable', 'tool_sherpa').then(function (text) {
                 if (placementid.startsWith('section-')) {
                     document.querySelectorAll('[id="' + placementid + '"]').forEach(section => {
                         const button = document.createElement('button');
@@ -949,7 +949,7 @@ define([
             // TODO consider case of multiple tours on one element
             // "Highlight" the section placements and the course header placement
             // onclick remove pseudo elements and handle click in differenct function
-            Str.get_string('selectplacement', 'block_teacher_tours').then(function (text) {
+            Str.get_string('selectplacement', 'tool_sherpa').then(function (text) {
                 document.querySelectorAll('[id^="section-"]').forEach(section => {
                     const button = document.createElement('button');
                     button.className = 'btn btn-sm btn-outline-primary section-sticky-highlight';
@@ -1032,7 +1032,7 @@ define([
                 argsObj = { tour: tourObject };
             }
             Ajax.call([{
-                methodname: 'block_teacher_tours_save_tour',
+                methodname: 'tool_sherpa_save_tour',
                 args: argsObj,
             }])[0].then(function (response) {
                 //If ok reset the tourObject, if not show error
@@ -1050,7 +1050,7 @@ define([
                 removeHighlighting();
                 $('.tour-preview').html('');
                 $('.tour-preview').hide();
-                Str.get_string('savetour', 'block_teacher_tours')
+                Str.get_string('savetour', 'tool_sherpa')
                     .then(function (text) {
                         $('#save-tour').prop('disabled', false).html('<i class="fa fa-save"></i> ' + text);
                     });

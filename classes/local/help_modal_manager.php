@@ -33,14 +33,31 @@ class help_modal_manager {
      * @param string $component the help string component
      * @param string $identifier the help string identifier
      * @param context $context the context of the current page
+     * @param string $bodyid the HTML body id of the current page (adds the page level materials, too)
      * @return array the payload for the external function
      */
-    public static function get_modal_payload(string $component, string $identifier, context $context): array {
+    public static function get_modal_payload(
+        string $component,
+        string $identifier,
+        context $context,
+        string $bodyid = ''
+    ): array {
         global $USER;
 
-        $sources = [];
+        // Materials mapped to this help field, plus the materials mapped to the current page's body id.
+        $urls = [];
         foreach (source_provider::get_sources_for_help($component, $identifier) as $source) {
-            $sources[] = ['url' => $source->url];
+            $urls[$source->url] = true;
+        }
+        if ($bodyid !== '') {
+            foreach (source_provider::get_sources_for_bodyid($bodyid) as $source) {
+                $urls[$source->url] = true;
+            }
+        }
+
+        $sources = [];
+        foreach (array_keys($urls) as $url) {
+            $sources[] = ['url' => $url];
         }
 
         $chatavailable = support_manager::chat_available($context);

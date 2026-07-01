@@ -32,6 +32,7 @@
     * component The help string component.
     * identifier The help string identifier.
     * contextid The current context id.
+    * bodyid The HTML body id of the current page (for page level material mapping).
     * chatavailable Whether the chat region is available.
     * showmaterials Whether the materials region is enabled.
 
@@ -45,6 +46,7 @@
         "component": "moodle",
         "identifier": "coursevisibility",
         "contextid": 42,
+        "bodyid": "page-course-edit",
         "chatavailable": true,
         "showmaterials": true
     }
@@ -58,6 +60,7 @@
         data-component="{{component}}"
         data-identifier="{{identifier}}"
         data-contextid="{{contextid}}"
+        data-bodyid="{{bodyid}}"
         data-title="{{title}}"
         data-chatavailable="{{#chatavailable}}1{{/chatavailable}}{{^chatavailable}}0{{/chatavailable}}"
         data-showmaterials="{{#showmaterials}}1{{/showmaterials}}{{^showmaterials}}0{{/showmaterials}}"

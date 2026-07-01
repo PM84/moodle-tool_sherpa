@@ -76,3 +76,8 @@
     bottom: 1rem;
     z-index: 1030;
 }
+
+/* The core help icon ("core:help") ships with a baked-in "text-info" class; recolour it to light. */
+.tool-sherpa-page-help-button .icon.text-info {
+    color: var(--bs-light) !important;
+}

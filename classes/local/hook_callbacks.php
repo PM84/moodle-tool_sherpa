@@ -54,6 +54,7 @@ class hook_callbacks {
         $templatecontext->component = $helpicon->component;
         $templatecontext->identifier = $helpicon->identifier;
         $templatecontext->contextid = $context->id;
+        $templatecontext->bodyid = (string) $PAGE->bodyid;
         $templatecontext->chatavailable = support_manager::chat_available($context);
         $templatecontext->showmaterials = (bool) get_config('tool_sherpa', 'showmaterials');
 

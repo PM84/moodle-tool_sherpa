@@ -41,12 +41,13 @@ let modal = null;
  * @param {String} component The help string component.
  * @param {String} identifier The help string identifier.
  * @param {Number} contextid The context id.
+ * @param {String} bodyid The HTML body id of the current page.
  * @returns {Promise<Object>} The modal payload.
  */
-const fetchContent = (component, identifier, contextid) => {
+const fetchContent = (component, identifier, contextid, bodyid) => {
     return Ajax.call([{
         methodname: 'tool_sherpa_get_help_modal_content',
-        args: {component, identifier, contextid},
+        args: {component, identifier, contextid, bodyid},
     }])[0];
 };
 
@@ -151,7 +152,7 @@ export const open = async(trigger) => {
 
         // Lazy load materials and chat from the server.
         if (showmaterials || chatavailable) {
-            const content = await fetchContent(data.component, data.identifier, contextid);
+            const content = await fetchContent(data.component, data.identifier, contextid, data.bodyid || '');
             if (showmaterials) {
                 await renderMaterials(root, content.sources);
             }

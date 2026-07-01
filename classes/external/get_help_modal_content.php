@@ -42,6 +42,7 @@ class get_help_modal_content extends external_api {
             'component' => new external_value(PARAM_COMPONENT, 'Frankenstyle component of the help string'),
             'identifier' => new external_value(PARAM_RAW, 'Help string identifier'),
             'contextid' => new external_value(PARAM_INT, 'Context id of the current page'),
+            'bodyid' => new external_value(PARAM_RAW, 'HTML body id of the current page', VALUE_DEFAULT, ''),
         ]);
     }
 
@@ -51,13 +52,15 @@ class get_help_modal_content extends external_api {
      * @param string $component the help string component
      * @param string $identifier the help string identifier
      * @param int $contextid the context id of the current page
+     * @param string $bodyid the HTML body id of the current page
      * @return array the modal payload
      */
-    public static function execute(string $component, string $identifier, int $contextid): array {
+    public static function execute(string $component, string $identifier, int $contextid, string $bodyid = ''): array {
         $params = self::validate_parameters(self::execute_parameters(), [
             'component' => $component,
             'identifier' => $identifier,
             'contextid' => $contextid,
+            'bodyid' => $bodyid,
         ]);
 
         $context = \core\context_helper::instance_by_id($params['contextid']);
@@ -69,7 +72,12 @@ class get_help_modal_content extends external_api {
             throw new \invalid_parameter_exception('Unknown help identifier');
         }
 
-        return help_modal_manager::get_modal_payload($params['component'], $params['identifier'], $context);
+        return help_modal_manager::get_modal_payload(
+            $params['component'],
+            $params['identifier'],
+            $context,
+            $params['bodyid']
+        );
     }
 
     /**

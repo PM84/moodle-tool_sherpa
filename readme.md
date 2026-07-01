@@ -24,8 +24,7 @@ Once the plugin is installed, the dialog box will contain not only the standard 
 Installation
 ------------
 
-Install the plugin like any other plugin to folder
-[path to plugin]
+Install the plugin like any other plugin to folder `public/admin/tool/sherpa`
 
 See http://docs.moodle.org/en/Installing_plugins for details on installing Moodle plugins
 
@@ -38,8 +37,21 @@ After installing the plugin, it does not do anything to Moodle yet.
 To configure the plugin and its behaviour, please visit:
 Site administration -> General -> tool_sherpa
 
-There, you find [x] settings:
+There, you find the following settings:
 
-[Describe the settings]
+- "Enable Sherpa": Basic switch to enable the sherpa functionality
+- "Open help in a modal": Clicking a core help icon opens a Sherpa modal instead of the popover.
+- "Show further materials": The Sherpa modal lists further materials (sources) configured for the help topic.
+- "Show AI chat": The Sherpa modal embeds the AI chat (when AI is available for the user).
+- "Enable 'Help, what should I do?'": Teachers see a "Help, what should I do?" option in the activity chooser that opens an AI assisted activity chooser. Depends on "AI chat".
+- "System prompt template": emplate for the field specific system prompt sent to the AI chat. Depends on "AI chat".
+
+Capabilities
+-----------
+
+The plugin has two capabilities:
+
+- `tool/sherpa:manage`: This capability has to be assigned in System context to provide access to the "Manage sources and placements" admin page.
+- `tool/sherpa:usesupport`: Assign this capability to the roles which should be able to see the support materials.
 
 If you want to learn more about using [plugin type] plugins in Moodle, please see https://docs.moodle.org/en/[plugintype].

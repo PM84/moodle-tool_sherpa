@@ -43,6 +43,11 @@ class source_form extends dynamic_form {
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
 
+        $mform->addElement('text', 'title', get_string('title', 'tool_sherpa'), ['size' => 60]);
+        $mform->setType('title', PARAM_TEXT);
+        $mform->addRule('title', null, 'required', null, 'client');
+        $mform->addRule('title', get_string('maximumchars', '', 255), 'maxlength', 255);
+
         $mform->addElement('text', 'url', get_string('url', 'tool_sherpa'), ['size' => 60]);
         $mform->setType('url', PARAM_RAW_TRIMMED);
         $mform->addRule('url', null, 'required', null, 'client');
@@ -74,6 +79,7 @@ class source_form extends dynamic_form {
         $data = $this->get_data();
 
         $source = new source($data->id ?: 0);
+        $source->set('title', $data->title);
         $source->set('url', $data->url);
         $source->save();
 
@@ -89,6 +95,7 @@ class source_form extends dynamic_form {
             $source = new source($id);
             $this->set_data((object) [
                 'id' => $source->get('id'),
+                'title' => $source->get('title'),
                 'url' => $source->get('url'),
             ]);
         }

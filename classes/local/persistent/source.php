@@ -38,6 +38,9 @@ class source extends persistent {
      */
     protected static function define_properties(): array {
         return [
+            'title' => [
+                'type' => PARAM_TEXT,
+            ],
             'url' => [
                 'type' => PARAM_RAW_TRIMMED,
             ],

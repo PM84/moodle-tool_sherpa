@@ -51,7 +51,8 @@ final class get_help_modal_content_test extends \advanced_testcase {
         // Disable the chat so the AI config is not required in the test environment.
         set_config('showchat', 0, 'tool_sherpa');
 
-        $sourceid = $DB->insert_record('tool_sherpa_source', (object) ['url' => 'https://example.org/x']);
+        $sourceid = $DB->insert_record('tool_sherpa_source',
+            (object) ['title' => 'Example source', 'url' => 'https://example.org/x']);
         $placementid = $DB->insert_record('tool_sherpa_placement', (object) [
             'type' => placement::TYPE_LANGSTRING,
             'value' => 'coursesummary,moodle',

@@ -84,6 +84,20 @@ class source_list extends system_report {
         $this->add_join("LEFT JOIN {user} umod ON umod.id = {$alias}.usermodified");
         $fullname = $DB->sql_fullname('umod.firstname', 'umod.lastname');
 
+        // Title column (required, shown first).
+        $this->add_column((new column(
+            'title',
+            new lang_string('title', 'tool_sherpa'),
+            'source'
+        ))
+            ->set_type(column::TYPE_TEXT)
+            ->add_fields("{$alias}.title")
+            ->set_is_sortable(true, ["{$alias}.title"])
+            ->add_callback(static function($value): string {
+                return format_string((string) $value);
+            })
+        );
+
         // URL column (inline editable).
         $this->add_column((new column(
             'url',
@@ -176,7 +190,15 @@ class source_list extends system_report {
         global $DB;
         $alias = $this->get_main_table_alias();
 
-        // Section "Sources": filter by url (own field).
+        // Section "Sources": filter by title and url (own fields).
+        $this->add_filter((new filter(
+            text::class,
+            'title',
+            new lang_string('title', 'tool_sherpa'),
+            'source',
+            "{$alias}.title"
+        )));
+
         $this->add_filter((new filter(
             text::class,
             'url',

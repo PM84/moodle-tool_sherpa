@@ -43,6 +43,11 @@ class placement extends persistent {
                 'type' => PARAM_ALPHA,
                 'choices' => placement_type::get_types(),
             ],
+            'title' => [
+                'type' => PARAM_TEXT,
+                'null' => NULL_ALLOWED,
+                'default' => null,
+            ],
             'value' => [
                 'type' => PARAM_RAW_TRIMMED,
             ],

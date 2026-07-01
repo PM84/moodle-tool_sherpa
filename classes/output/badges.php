@@ -85,6 +85,7 @@ class badges {
         foreach ($records as $record) {
             $badges .= $output->render_from_template('tool_sherpa/source_badge', [
                 'url' => $record->url,
+                'urlshort' => shorten_text($record->url, 50, true),
                 'unlink' => true,
                 'mappingid' => $record->mappingid,
             ]);

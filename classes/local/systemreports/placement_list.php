@@ -109,7 +109,27 @@ class placement_list extends system_report {
                     'title' => $editlabel,
                     'aria-label' => $editlabel,
                 ]);
-                return $badge . $editicon;
+                return html_writer::span($badge . $editicon, 'text-nowrap');
+            })
+        );
+
+        // Title column (optional, shown second; falls back to a placeholder when empty).
+        $this->add_column((new column(
+            'title',
+            new lang_string('title', 'tool_sherpa'),
+            'placement'
+        ))
+            ->set_type(column::TYPE_TEXT)
+            ->add_fields("{$alias}.title")
+            ->set_is_sortable(true, ["{$alias}.title"])
+            ->add_callback(static function($value): string {
+                $value = (string) ($value ?? '');
+                if (trim($value) === '') {
+                    return html_writer::tag('span',
+                        html_writer::tag('em', get_string('notitle', 'tool_sherpa')),
+                        ['class' => 'text-nowrap']);
+                }
+                return format_string($value);
             })
         );
 
@@ -234,6 +254,14 @@ class placement_list extends system_report {
                 return $options;
             })
         );
+
+        $this->add_filter((new filter(
+            text::class,
+            'title',
+            new lang_string('title', 'tool_sherpa'),
+            'placement',
+            "{$alias}.title"
+        )));
 
         $this->add_filter((new filter(
             text::class,

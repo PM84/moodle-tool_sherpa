@@ -24,20 +24,22 @@
     * data-mapping-id
 
     Context variables required for this template:
-    * url - The source URL.
+    * url - The full source URL (used as the unlink label).
+    * urlshort - The source URL shortened for display.
     * unlink - Whether to show the unlink control.
     * mappingid - The mapping id (used when unlinking).
 
     Example context (json):
     {
         "url": "https://example.com/docs",
+        "urlshort": "https://example.com/docs",
         "unlink": true,
         "mappingid": 7
     }
 }}
 <span class="tool_sherpa-badge">
     <span class="badge bg-primary text-white">
-        {{url}}
+        {{urlshort}}
         {{#unlink}}
             <a href="#" role="button" class="tool_sherpa-unlink" data-action="mapping-delete"
                 data-mapping-id="{{mappingid}}" data-mapping-label="{{url}}"
@@ -47,3 +49,4 @@
         {{/unlink}}
     </span>
 </span>
+<br>

@@ -51,6 +51,10 @@ class placement_form extends dynamic_form {
         $mform->addElement('select', 'type', get_string('type', 'tool_sherpa'), $options);
         $mform->addRule('type', null, 'required', null, 'client');
 
+        $mform->addElement('text', 'title', get_string('title', 'tool_sherpa'), ['size' => 60]);
+        $mform->setType('title', PARAM_TEXT);
+        $mform->addRule('title', get_string('maximumchars', '', 255), 'maxlength', 255);
+
         $mform->addElement('text', 'value', get_string('value', 'tool_sherpa'), ['size' => 60]);
         $mform->setType('value', PARAM_RAW_TRIMMED);
         $mform->addRule('value', null, 'required', null, 'client');
@@ -83,6 +87,7 @@ class placement_form extends dynamic_form {
 
         $placement = new placement($data->id ?: 0);
         $placement->set('type', $data->type);
+        $placement->set('title', trim($data->title) !== '' ? $data->title : null);
         $placement->set('value', $data->value);
         $placement->save();
 
@@ -99,6 +104,7 @@ class placement_form extends dynamic_form {
             $this->set_data((object) [
                 'id' => $placement->get('id'),
                 'type' => $placement->get('type'),
+                'title' => $placement->get('title'),
                 'value' => $placement->get('value'),
             ]);
         }

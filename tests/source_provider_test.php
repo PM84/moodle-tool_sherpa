@@ -48,7 +48,7 @@ final class source_provider_test extends \advanced_testcase {
      */
     private function map_source(string $value, string $url): void {
         global $DB;
-        $sourceid = $DB->insert_record('tool_sherpa_source', (object) ['url' => $url]);
+        $sourceid = $DB->insert_record('tool_sherpa_source', (object) ['title' => 'Example source', 'url' => $url]);
         $placementid = $DB->insert_record('tool_sherpa_placement', (object) [
             'type' => placement::TYPE_LANGSTRING,
             'value' => $value,

@@ -48,7 +48,8 @@ final class system_prompt_builder_test extends \advanced_testcase {
         set_config('showmaterials', 1, 'tool_sherpa');
         set_config('systemprompttemplate', '{title}|{component}|{identifier}|{source_urls}', 'tool_sherpa');
 
-        $sourceid = $DB->insert_record('tool_sherpa_source', (object) ['url' => 'https://example.org/x']);
+        $sourceid = $DB->insert_record('tool_sherpa_source',
+            (object) ['title' => 'Example source', 'url' => 'https://example.org/x']);
         $placementid = $DB->insert_record('tool_sherpa_placement', (object) [
             'type' => placement::TYPE_LANGSTRING,
             'value' => 'coursesummary,moodle',

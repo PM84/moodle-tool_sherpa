@@ -114,6 +114,7 @@ export const init = () => {
         'addsource', 'editsource', 'deletesource', 'sourcedeleted',
         'addplacement', 'editplacement', 'deleteplacement', 'placementdeleted',
         'linksource', 'linkplacement',
+        'unlink', 'unlinkconfirm',
     ]);
     prefetchStrings('core', ['delete']);
 
@@ -186,7 +187,7 @@ export const init = () => {
             event.preventDefault();
             confirmDelete(mappingDelete, 'tool_sherpa_mapping_delete', mappingDelete.dataset.mappingId,
                 getString('unlink', 'tool_sherpa'),
-                getString('unlink', 'tool_sherpa'),
+                getString('unlinkconfirm', 'tool_sherpa', mappingDelete.dataset.mappingLabel),
                 getString('unlink', 'tool_sherpa'));
         }
     });

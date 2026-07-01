@@ -19,12 +19,14 @@ declare(strict_types=1);
 namespace tool_sherpa\local\systemreports;
 
 use context_system;
+use html_writer;
 use lang_string;
 use moodle_url;
 use pix_icon;
 use stdClass;
 use core_reportbuilder\system_report;
-use core_reportbuilder\local\filters\text;
+use core_reportbuilder\local\filters\{date, text};
+use core_reportbuilder\local\helpers\format;
 use core_reportbuilder\local\report\{action, column, filter};
 use tool_sherpa\local\persistent\source;
 use tool_sherpa\output\badges;
@@ -75,7 +77,12 @@ class source_list extends system_report {
      * Add columns to the report.
      */
     protected function add_columns(): void {
+        global $DB;
         $alias = $this->get_main_table_alias();
+
+        // Join the user who last modified the record (for the "Modified by" column and filter).
+        $this->add_join("LEFT JOIN {user} umod ON umod.id = {$alias}.usermodified");
+        $fullname = $DB->sql_fullname('umod.firstname', 'umod.lastname');
 
         // URL column (inline editable).
         $this->add_column((new column(
@@ -103,6 +110,61 @@ class source_list extends system_report {
             ->set_is_sortable(false)
             ->add_callback(static function($value, stdClass $row): string {
                 return badges::placements_for_source((int) $row->id);
+            })
+        );
+
+        $this->add_audit_columns($alias, $fullname);
+    }
+
+    /**
+     * Add the standard audit columns (time created, time modified, modified by).
+     *
+     * @param string $alias the main table alias
+     * @param string $fullname the SQL expression resolving the modifying user's full name
+     */
+    protected function add_audit_columns(string $alias, string $fullname): void {
+        // Time created (shortened date without weekday and time).
+        $this->add_column((new column(
+            'timecreated',
+            new lang_string('timecreated', 'tool_sherpa'),
+            'source'
+        ))
+            ->set_type(column::TYPE_TIMESTAMP)
+            ->add_fields("{$alias}.timecreated")
+            ->set_is_sortable(true)
+            ->add_callback([format::class, 'userdate'], get_string('strftimedate'))
+        );
+
+        // Time modified (shortened date without weekday and time).
+        $this->add_column((new column(
+            'timemodified',
+            new lang_string('timemodified', 'tool_sherpa'),
+            'source'
+        ))
+            ->set_type(column::TYPE_TIMESTAMP)
+            ->add_fields("{$alias}.timemodified")
+            ->set_is_sortable(true)
+            ->add_callback([format::class, 'userdate'], get_string('strftimedate'))
+        );
+
+        // Modified by (link to the user profile).
+        $this->add_column((new column(
+            'modifiedby',
+            new lang_string('modifiedby', 'tool_sherpa'),
+            'source'
+        ))
+            ->set_type(column::TYPE_TEXT)
+            ->add_field($fullname, 'modifiedby')
+            ->add_field('umod.id', 'moduserid')
+            ->set_is_sortable(true, [$fullname])
+            ->add_callback(static function($value, stdClass $row): string {
+                if (empty($row->moduserid)) {
+                    return '';
+                }
+                return html_writer::link(
+                    new moodle_url('/user/profile.php', ['id' => $row->moduserid]),
+                    s((string) $value)
+                );
             })
         );
     }
@@ -146,6 +208,40 @@ class source_list extends system_report {
                 FROM {tool_sherpa_mapping} m
                 JOIN {tool_sherpa_placement} p ON p.id = m.placement
                WHERE m.source = {$alias}.id)"
+        )));
+
+        $this->add_audit_filters($alias, $DB->sql_fullname('umod.firstname', 'umod.lastname'));
+    }
+
+    /**
+     * Add the standard audit filters (time created, time modified, modified by).
+     *
+     * @param string $alias the main table alias
+     * @param string $fullname the SQL expression resolving the modifying user's full name
+     */
+    protected function add_audit_filters(string $alias, string $fullname): void {
+        $this->add_filter((new filter(
+            date::class,
+            'timecreated',
+            new lang_string('timecreated', 'tool_sherpa'),
+            'source',
+            "{$alias}.timecreated"
+        )));
+
+        $this->add_filter((new filter(
+            date::class,
+            'timemodified',
+            new lang_string('timemodified', 'tool_sherpa'),
+            'source',
+            "{$alias}.timemodified"
+        )));
+
+        $this->add_filter((new filter(
+            text::class,
+            'modifiedby',
+            new lang_string('modifiedby', 'tool_sherpa'),
+            'source',
+            $fullname
         )));
     }
 

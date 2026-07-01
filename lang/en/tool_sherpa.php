@@ -45,6 +45,7 @@ $string['linksource'] = 'Link source';
 $string['manage'] = 'Manage Sherpa';
 $string['mappingexists'] = 'This source and placement are already mapped.';
 $string['materialsregiontitle'] = 'Further materials';
+$string['modifiedby'] = 'Modified by';
 $string['nomaterials'] = 'No further materials available.';
 $string['opensinnewtab'] = '(opens in a new tab)';
 $string['placement'] = 'Placement';
@@ -73,11 +74,14 @@ Further sources (URLs): {source_urls}
 
 Answer in simple, clear language and stay within the given context.';
 $string['systemprompttemplate_desc'] = 'Template for the field specific system prompt sent to the AI chat. Placeholders: {title}, {component}, {identifier}, {helptext_plain}, {source_urls}.';
+$string['timecreated'] = 'Time created';
+$string['timemodified'] = 'Time modified';
 $string['type'] = 'Type';
 $string['type_formelement'] = 'Form element';
 $string['type_langstring'] = 'Language string';
 $string['type_path'] = 'Path';
 $string['unlink'] = 'Unlink';
+$string['unlinkconfirm'] = 'Are you sure you want to unlink "{$a}"?';
 $string['url'] = 'URL';
 $string['usemodal'] = 'Open help in a modal';
 $string['usemodal_desc'] = 'If enabled, clicking a core help icon opens a Sherpa modal instead of the popover. Default: classic popover.';

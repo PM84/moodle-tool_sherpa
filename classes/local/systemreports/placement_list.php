@@ -25,7 +25,8 @@ use moodle_url;
 use pix_icon;
 use stdClass;
 use core_reportbuilder\system_report;
-use core_reportbuilder\local\filters\{select, text};
+use core_reportbuilder\local\filters\{date, select, text};
+use core_reportbuilder\local\helpers\format;
 use core_reportbuilder\local\report\{action, column, filter};
 use tool_sherpa\placement as placementtype;
 use tool_sherpa\local\persistent\placement;
@@ -77,7 +78,12 @@ class placement_list extends system_report {
      * Add columns to the report.
      */
     protected function add_columns(): void {
+        global $DB;
         $alias = $this->get_main_table_alias();
+
+        // Join the user who last modified the record (for the "Modified by" column and filter).
+        $this->add_join("LEFT JOIN {user} umod ON umod.id = {$alias}.usermodified");
+        $fullname = $DB->sql_fullname('umod.firstname', 'umod.lastname');
 
         // Type column (Bootstrap badge, edited via the modal only).
         $this->add_column((new column(
@@ -86,13 +92,24 @@ class placement_list extends system_report {
             'placement'
         ))
             ->set_type(column::TYPE_TEXT)
-            ->add_fields("{$alias}.type")
+            ->add_fields("{$alias}.type, {$alias}.id")
             ->set_is_sortable(true, ["{$alias}.type"])
-            ->add_callback(static function($value): string {
+            ->add_callback(static function($value, stdClass $row): string {
+                global $OUTPUT;
                 if ((string) $value === '') {
                     return '';
                 }
-                return html_writer::span(get_string('type_' . $value, 'tool_sherpa'), 'badge bg-secondary text-white');
+                $badge = html_writer::span(get_string('type_' . $value, 'tool_sherpa'), 'badge bg-info text-white');
+                $editlabel = get_string('editplacement', 'tool_sherpa');
+                $editicon = html_writer::link('#', $OUTPUT->pix_icon('t/edit', $editlabel), [
+                    'role' => 'button',
+                    'class' => 'ms-1 text-dark',
+                    'data-action' => 'placement-edit',
+                    'data-placement-id' => $row->id,
+                    'title' => $editlabel,
+                    'aria-label' => $editlabel,
+                ]);
+                return $badge . $editicon;
             })
         );
 
@@ -122,6 +139,61 @@ class placement_list extends system_report {
             ->set_is_sortable(false)
             ->add_callback(static function($value, stdClass $row): string {
                 return badges::sources_for_placement((int) $row->id);
+            })
+        );
+
+        $this->add_audit_columns($alias, $fullname);
+    }
+
+    /**
+     * Add the standard audit columns (time created, time modified, modified by).
+     *
+     * @param string $alias the main table alias
+     * @param string $fullname the SQL expression resolving the modifying user's full name
+     */
+    protected function add_audit_columns(string $alias, string $fullname): void {
+        // Time created (shortened date without weekday and time).
+        $this->add_column((new column(
+            'timecreated',
+            new lang_string('timecreated', 'tool_sherpa'),
+            'placement'
+        ))
+            ->set_type(column::TYPE_TIMESTAMP)
+            ->add_fields("{$alias}.timecreated")
+            ->set_is_sortable(true)
+            ->add_callback([format::class, 'userdate'], get_string('strftimedate'))
+        );
+
+        // Time modified (shortened date without weekday and time).
+        $this->add_column((new column(
+            'timemodified',
+            new lang_string('timemodified', 'tool_sherpa'),
+            'placement'
+        ))
+            ->set_type(column::TYPE_TIMESTAMP)
+            ->add_fields("{$alias}.timemodified")
+            ->set_is_sortable(true)
+            ->add_callback([format::class, 'userdate'], get_string('strftimedate'))
+        );
+
+        // Modified by (link to the user profile).
+        $this->add_column((new column(
+            'modifiedby',
+            new lang_string('modifiedby', 'tool_sherpa'),
+            'placement'
+        ))
+            ->set_type(column::TYPE_TEXT)
+            ->add_field($fullname, 'modifiedby')
+            ->add_field('umod.id', 'moduserid')
+            ->set_is_sortable(true, [$fullname])
+            ->add_callback(static function($value, stdClass $row): string {
+                if (empty($row->moduserid)) {
+                    return '';
+                }
+                return html_writer::link(
+                    new moodle_url('/user/profile.php', ['id' => $row->moduserid]),
+                    s((string) $value)
+                );
             })
         );
     }
@@ -169,6 +241,40 @@ class placement_list extends system_report {
             new lang_string('value', 'tool_sherpa'),
             'placement',
             "{$alias}.value"
+        )));
+
+        $this->add_audit_filters($alias, $DB->sql_fullname('umod.firstname', 'umod.lastname'));
+    }
+
+    /**
+     * Add the standard audit filters (time created, time modified, modified by).
+     *
+     * @param string $alias the main table alias
+     * @param string $fullname the SQL expression resolving the modifying user's full name
+     */
+    protected function add_audit_filters(string $alias, string $fullname): void {
+        $this->add_filter((new filter(
+            date::class,
+            'timecreated',
+            new lang_string('timecreated', 'tool_sherpa'),
+            'placement',
+            "{$alias}.timecreated"
+        )));
+
+        $this->add_filter((new filter(
+            date::class,
+            'timemodified',
+            new lang_string('timemodified', 'tool_sherpa'),
+            'placement',
+            "{$alias}.timemodified"
+        )));
+
+        $this->add_filter((new filter(
+            text::class,
+            'modifiedby',
+            new lang_string('modifiedby', 'tool_sherpa'),
+            'placement',
+            $fullname
         )));
     }
 

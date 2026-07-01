@@ -70,11 +70,12 @@ class mapping_form extends dynamic_form {
                      WHERE p.id NOT IN (
                            SELECT m.placement FROM {tool_sherpa_mapping} m WHERE m.source = :sourceid)
                   ORDER BY p.type ASC, p.value ASC";
-            $options = [];
+            $options = ['' => ''];
             foreach ($DB->get_records_sql($sql, ['sourceid' => $sourceid]) as $record) {
                 $options[$record->id] = get_string('type_' . $record->type, 'tool_sherpa') . ': ' . $record->value;
             }
-            $mform->addElement('autocomplete', 'placement', get_string('placement', 'tool_sherpa'), $options);
+            $mform->addElement('autocomplete', 'placement', get_string('placement', 'tool_sherpa'), $options,
+                ['noselectionstring' => get_string('choosedots')]);
             $mform->addRule('placement', null, 'required', null, 'client');
         } else {
             // Anchored on a placement: pick a not-yet-linked source.
@@ -83,11 +84,12 @@ class mapping_form extends dynamic_form {
                      WHERE s.id NOT IN (
                            SELECT m.source FROM {tool_sherpa_mapping} m WHERE m.placement = :placementid)
                   ORDER BY s.url ASC";
-            $options = [];
+            $options = ['' => ''];
             foreach ($DB->get_records_sql($sql, ['placementid' => $placementid]) as $record) {
                 $options[$record->id] = $record->url;
             }
-            $mform->addElement('autocomplete', 'source', get_string('url', 'tool_sherpa'), $options);
+            $mform->addElement('autocomplete', 'source', get_string('url', 'tool_sherpa'), $options,
+                ['noselectionstring' => get_string('choosedots')]);
             $mform->addRule('source', null, 'required', null, 'client');
         }
     }

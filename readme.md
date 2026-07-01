@@ -34,7 +34,7 @@ Usage & Settings
 
 After installing the plugin, it does not do anything to Moodle yet.
 
-To configure the plugin and its behaviour, please visit:
+To enable the plugin and its features, please visit:
 Site administration -> General -> tool_sherpa
 
 There, you find the following settings:

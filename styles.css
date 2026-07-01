@@ -32,3 +32,31 @@
 .tool_sherpa-badge .tool_sherpa-unlink:hover {
     opacity: 1;
 }
+
+/* Sherpa help chooser: hide the unused core search input, the "All" tab and favourites; style the demo tiles. */
+.sherpa-helpchooser .modchooserfilters,
+.sherpa-helpchooser [data-region="all-tab-nav"] {
+    display: none;
+}
+
+.sherpa-helpchooser [data-action="manage-module-favourite"] {
+    display: none;
+}
+
+/* Keep the embedded chat compact so it does not overflow and the chooser stays visible below it. */
+.sherpa-helpchooser .block_ai_chat_modal .modal-dialog-embedded .modal-content-embedded {
+    min-height: 0;
+}
+
+.sherpa-helpchooser .block_ai_chat_modal .modal-dialog-embedded .block_ai_chat-output-wrapper {
+    max-height: 32vh;
+}
+
+.sherpa-template-tile {
+    width: 12rem;
+}
+
+.sherpa-template-tile .sherpa-tile-placeholder {
+    height: 5rem;
+    background: linear-gradient(135deg, #dee2e6, #adb5bd);
+}

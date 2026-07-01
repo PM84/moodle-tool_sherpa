@@ -1,0 +1,37 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template tool_sherpa/helpchooser_panel
+
+    The body of the Sherpa help chooser modal: an embedded block_ai_chat conversation on the left
+    and the reused core activity chooser on the right. As the conversation progresses, the chooser
+    list is filtered to the activities the assistant currently recommends.
+
+    Example context (json):
+    {
+    }
+}}
+<div class="sherpa-helpchooser">
+    <div class="sherpa-chat mb-3" data-region="sherpa-chat">
+        <p class="text-muted small mb-2">{{#str}} helpchooser_intro, tool_sherpa {{/str}}</p>
+        <div class="sherpa-chat-container" data-region="sherpa-chat-container"></div>
+        <div class="sherpa-chat-status text-muted small mt-1" data-region="sherpa-status"
+            role="status" aria-live="polite"></div>
+    </div>
+    <hr aria-hidden="true">
+    <div data-region="sherpa-chooser"></div>
+</div>

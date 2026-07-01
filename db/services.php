@@ -53,4 +53,12 @@ $functions = [
         'ajax'        => true,
         'capabilities' => 'tool/sherpa:usesupport',
     ],
+    'tool_sherpa_prepare_chooser_chat' => [
+        'classname'   => 'tool_sherpa\external\prepare_chooser_chat',
+        'methodname'  => 'execute',
+        'description' => 'Store the help chooser chat system prompt and return the chat context and materials.',
+        'type'        => 'read',
+        'ajax'        => true,
+        'capabilities' => 'tool/sherpa:usesupport',
+    ],
 ];

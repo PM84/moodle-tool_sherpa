@@ -56,6 +56,22 @@ if ($hassiteconfig || $hasmanage || has_capability('moodle/site:configview', $sy
             get_string('settingsheading_desc', 'tool_sherpa')
         ));
 
+        // Offer the "Help, what should I do?" entry in the activity chooser. Default off.
+        $settings->add(new admin_setting_configcheckbox(
+            'tool_sherpa/enablehelpchooser',
+            get_string('enablehelpchooser', 'tool_sherpa'),
+            get_string('enablehelpchooser_desc', 'tool_sherpa'),
+            0
+        ));
+
+        // Replace the core help popover with the Sherpa modal. Default off (classic popover).
+        $settings->add(new admin_setting_configcheckbox(
+            'tool_sherpa/usemodal',
+            get_string('usemodal', 'tool_sherpa'),
+            get_string('usemodal_desc', 'tool_sherpa'),
+            0
+        ));
+
         // Master switch for the whole plugin.
         $settings->add(new admin_setting_configcheckbox(
             'tool_sherpa/enabled',

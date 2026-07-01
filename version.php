@@ -25,12 +25,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026063001;
+$plugin->version = 2026070101;
 $plugin->requires = 2025100600;
 $plugin->supported = [500, 501];
 $plugin->component = 'tool_sherpa';
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.2.0';
+$plugin->release = '0.4.0';
 $plugin->dependencies = [
     'local_ai_manager' => 2026050500,
     'block_ai_chat' => 2026050800,

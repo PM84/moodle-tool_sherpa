@@ -1,0 +1,42 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template tool_sherpa/template_tile
+
+    A mocked "course tile" representing an example template for an activity. As there are no real
+    templates in the demo, the tile is purely informational (a "Demo" badge, no action).
+
+    Example context (json):
+    {
+        "title": "Wiki template",
+        "summary": "A ready-made example for the Wiki activity.",
+        "image": ""
+    }
+}}
+<div class="card sherpa-template-tile">
+    {{#image}}
+        <img class="card-img-top" src="{{image}}" alt="" aria-hidden="true">
+    {{/image}}
+    {{^image}}
+        <div class="sherpa-tile-placeholder card-img-top" aria-hidden="true"></div>
+    {{/image}}
+    <div class="card-body">
+        <span class="badge bg-secondary">{{#str}} helpchooser_demobadge, tool_sherpa {{/str}}</span>
+        <h6 class="card-title mt-1 mb-1">{{title}}</h6>
+        <p class="card-text small text-muted mb-0">{{summary}}</p>
+    </div>
+</div>

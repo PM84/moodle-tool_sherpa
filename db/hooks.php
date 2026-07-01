@@ -37,4 +37,9 @@ $callbacks = [
         'callback' => \tool_sherpa\local\hook_callbacks::class . '::inject_system_prompt',
         'priority' => 500,
     ],
+    // Add the "Help, what should I do?" entry to the activity chooser button dropdown.
+    [
+        'hook' => \core_course\hook\before_activitychooserbutton_exported::class,
+        'callback' => \tool_sherpa\local\callbacks\before_activitychooserbutton_exported_handler::class . '::callback',
+    ],
 ];

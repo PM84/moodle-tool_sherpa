@@ -39,6 +39,29 @@ $string['editurl'] = 'Edit URL';
 $string['editvalue'] = 'Edit value';
 $string['enabled'] = 'Enable Sherpa';
 $string['enabled_desc'] = 'If enabled, Sherpa provides individual AI based support throughout the site.';
+$string['enablehelpchooser'] = 'Enable "Help, what should I do?"';
+$string['enablehelpchooser_desc'] = 'If enabled, teachers see a "Help, what should I do?" option in the activity chooser that opens an AI assisted activity chooser.';
+$string['helpchooser_chatsystemprompt'] = 'You are "Sherpa", a friendly didactic assistant embedded in the Moodle activity chooser. A teacher is planning what to do in their course. Discuss their ideas with them, ask brief clarifying questions when helpful, and recommend which of the available Moodle activities fit their goal, explaining why and how they could use each one.
+
+Available activities (modname: name):
+{$a->activities}
+
+Only ever recommend activities from this list, using their exact modname.
+
+At the very end of EVERY reply, append one machine-readable line in exactly this format, listing the modnames you currently recommend (most relevant first, or empty if none yet):
+[[SHERPA_ACTIVITIES: modname1, modname2]]
+Do not mention or explain this line to the teacher.';
+$string['helpchooser_demobadge'] = 'Demo';
+$string['helpchooser_intro'] = 'Describe in your own words what you want your learners to do. Sherpa discusses ideas with you and suggests suitable activities.';
+$string['helpchooser_open'] = 'Help, what should I do?';
+$string['helpchooser_resultslabel'] = 'Sherpa suggestions';
+$string['helpchooser_templatestitle'] = 'Example templates';
+$string['helpchooser_templatesummary'] = 'A ready-made example for the "{$a}" activity.';
+$string['helpchooser_templatetitle'] = '{$a} template';
+$string['helpchooser_title'] = 'What would you like to do?';
+$string['helpchooser_tutoriallabel'] = 'Tutorial: {$a}';
+$string['helpchooser_tutorialstitle'] = 'Tutorials';
+$string['helpchooser_unavailable'] = 'The AI assistant is not available for you here.';
 $string['helpregiontitle'] = 'Help';
 $string['linkplacement'] = 'Link placement';
 $string['linksource'] = 'Link source';

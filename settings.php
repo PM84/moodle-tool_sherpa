@@ -40,8 +40,8 @@ if ($hasmanage) {
 
 // Show the Sherpa section for full admins as well as for users allowed to manage or view it.
 if ($hassiteconfig || $hasmanage || has_capability('moodle/site:configview', $systemcontext)) {
-    // Own category, listed under "Plugins > Admin tools" (the "tools" node).
-    $ADMIN->add('tools', new admin_category(
+    // Own category (rendered as a section on the "General" tab of the site administration).
+    $ADMIN->add('root', new admin_category(
         'tool_sherpa',
         get_string('pluginname', 'tool_sherpa')
     ));
